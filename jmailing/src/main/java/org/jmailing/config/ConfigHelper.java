@@ -4,22 +4,30 @@ import java.io.File;
 
 public class ConfigHelper {
 
-	static public void checkDirectory(String filename) {
-		File fname = new File(filename);
-		File parent = fname.getParentFile();
-		if (parent.exists() == false) {
-			parent.mkdirs();
+	static private void checkDirectory(String folder) {
+		File f = new File(folder);
+		if (f.exists() == false) {
+			f.mkdirs();
 		}
 	}
 
-	static public File getConfigPath(String path, boolean checkDir) {
-		String filename = getRootStore() + File.separator + "conf"
-				+ File.separator + path;
+	static public String getConfigPath(String filename, boolean checkDir) {
+		String folder = getRootStore() + File.separator + Constants.CONF_FOLDER
+				+ File.separator;
 		if (checkDir) {
-			checkDirectory(filename);
+			checkDirectory(folder);
 		}
-		return new File(filename);
+		return folder+filename;
 	}
+	
+//	static public File getConfigPathFile(String filename, boolean checkDir) {
+//		String folder = getRootStore() + File.separator + Constants.CONF_FOLDER
+//				+ File.separator;
+//		if (checkDir) {
+//			checkDirectory(folder);
+//		}
+//		return new File(folder+filename);
+//	}
 
 	static public String getPath(String path) {
 		return getRootStore() + File.separator + path;

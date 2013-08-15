@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,6 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
+
+import org.jmailing.io.smtp.SmtpIO;
+import org.jmailing.model.smtp.Smtp;
 
 public class SmtpDialog extends JDialog {
 
@@ -27,35 +31,25 @@ public class SmtpDialog extends JDialog {
 	private JTextField passwordTF;
 	private JTextField fromLabelAddrTF;
 	private JTextField fromEmailTF;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			SmtpDialog dialog = new SmtpDialog();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private Smtp smtp = null;
+	private SmtpIO smtpIO = null;
 
 	/**
 	 * Create the dialog.
 	 */
-	public SmtpDialog() {
+	public SmtpDialog(Smtp smtp, SmtpIO smtpIO) {
+		this.smtp = smtp;
+
+		this.smtpIO = smtpIO;
 		setTitle("SMTP Configuration");
 		setModal(true);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
-		JPanel  contentPanel=createContent();
+		JPanel contentPanel = createContent();
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.NORTH);
-		
 
-		getContentPane().add(createButtons(),BorderLayout.SOUTH);
-
+		getContentPane().add(createButtons(), BorderLayout.SOUTH);
 	}
 
 	private JPanel createContent() {
@@ -63,56 +57,54 @@ public class SmtpDialog extends JDialog {
 		MigLayout layout = new MigLayout("", "[right][grow,fill]");
 		content.setLayout(layout);
 
-		addSeparator(content, "SMTP");
+		addSeparator(content, "SMTP Parameters");
 
 		JLabel lblServeur = new JLabel("Host");
 		content.add(lblServeur);
 
-		hostTF = new JTextField();
+		hostTF = new JTextField(smtp.getHost());
 		content.add(hostTF, "wrap");
 
 		JLabel lblPort = new JLabel("Port");
 		content.add(lblPort);
 
-		portTF = new JTextField();
+		portTF = new JTextField(smtp.getPort());
 		content.add(portTF, "growx,wrap");
 
-		JLabel lblIdentifiant = new JLabel("Username");
-		content.add(lblIdentifiant);
+		JLabel lblUsername = new JLabel("Username");
+		content.add(lblUsername);
 
-		loginTF = new JTextField();
+		loginTF = new JTextField(smtp.getLogin());
 		content.add(loginTF, "growx,wrap");
 
-		JLabel lblMotDePasse = new JLabel("Password");
-		content.add(lblMotDePasse);
+		JLabel lblPassword = new JLabel("Password");
+		content.add(lblPassword);
 
-		passwordTF = new JTextField();
+		passwordTF = new JTextField(smtp.getPassword());
 		content.add(passwordTF, "growx,wrap");
 
+		addSeparator(content, "From parameters");
 
-		addSeparator(content, "Email");
-
-		JLabel lblFromLabelAddr = new JLabel("From label address");
+		JLabel lblFromLabelAddr = new JLabel("Label address");
 		content.add(lblFromLabelAddr);
 
-		fromLabelAddrTF = new JTextField();
+		fromLabelAddrTF = new JTextField(smtp.getFromAddress());
 		content.add(fromLabelAddrTF, "growx,wrap");
 
+		JLabel lblEmailAddress = new JLabel("Email address");
+		content.add(lblEmailAddress);
 
-		JLabel lblAdresseMailDenvoi = new JLabel("From email address");
-		content.add(lblAdresseMailDenvoi);
-
-		fromEmailTF = new JTextField();
+		fromEmailTF = new JTextField(smtp.getFromLabel());
 		content.add(fromEmailTF, "growx,wrap");
-		
+
 		addSeparator(content, "");
-	
+
 		return content;
 	}
 
 	private JPanel createButtons() {
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 
 		// Send email test
 		JButton checkParamButton = new JButton("Check parameters");
@@ -128,6 +120,19 @@ public class SmtpDialog extends JDialog {
 		okButton.setActionCommand("OK");
 		buttonPanel.add(okButton);
 		getRootPane().setDefaultButton(okButton);
+		okButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				try {
+					copyValues();
+					smtpIO.save();
+					dispose();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 
 		// Cancel
 		JButton cancelButton = new JButton("Cancel");
@@ -147,6 +152,15 @@ public class SmtpDialog extends JDialog {
 		p.add(new JLabel(text), "split 2, span");
 		JSeparator separator = new JSeparator();
 		p.add(separator, "growx, wrap");
+	}
+
+	private void copyValues() {
+		smtp.setHost(hostTF.getText());
+		smtp.setPort(portTF.getText());
+		smtp.setLogin(loginTF.getText());
+		smtp.setPassword(passwordTF.getText());
+		smtp.setFromAddress(fromEmailTF.getText());
+		smtp.setFromLabel(fromLabelAddrTF.getText());
 	}
 
 }

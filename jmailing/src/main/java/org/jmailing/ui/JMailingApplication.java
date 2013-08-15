@@ -5,6 +5,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
@@ -13,21 +14,39 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import org.jmailing.injector.JMailingModule;
+import org.jmailing.io.smtp.SmtpIO;
+import org.jmailing.model.smtp.Smtp;
 import org.jmailing.ui.about.AboutDialog;
 import org.jmailing.ui.smtp.SmtpDialog;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 public class JMailingApplication {
 
 	private JFrame frame;
+	Injector injector = null;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					Injector injector = Guice
+							.createInjector(new JMailingModule());
+					try {
+						SmtpIO io = injector.getInstance(SmtpIO.class);
+						io.load();
+
+					} catch (IOException e) {
+
+					}
 					JMailingApplication window = new JMailingApplication();
+					window.injector = injector;
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -68,15 +87,17 @@ public class JMailingApplication {
 		quitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
 				InputEvent.CTRL_MASK));
 		fileMenu.add(quitMenuItem);
-		
+
 		JMenu mnConfiguration = new JMenu("Configuration");
 		menuBar.add(mnConfiguration);
-		
+
 		JMenuItem mntmMail = new JMenuItem("SMTP Server");
 		mntmMail.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				SmtpDialog smtpDialog = new SmtpDialog();
+				Smtp smtp = injector.getInstance(Smtp.class);
+				SmtpIO smtpIO = injector.getInstance(SmtpIO.class);
+				SmtpDialog smtpDialog = new SmtpDialog(smtp, smtpIO);
 				smtpDialog.setVisible(true);
 			}
 		});
@@ -87,9 +108,9 @@ public class JMailingApplication {
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic('H');
 		menuBar.add(helpMenu);
-//		JMenuItem helpMenuItem = new JMenuItem("Aide");
-//		helpMenu.add(helpMenuItem);
-		
+		// JMenuItem helpMenuItem = new JMenuItem("Aide");
+		// helpMenu.add(helpMenuItem);
+
 		JMenuItem aboutMenuItem = new JMenuItem("About...");
 		aboutMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
@@ -98,13 +119,13 @@ public class JMailingApplication {
 			}
 		});
 		helpMenu.add(aboutMenuItem);
-		
-//		Notifier notifieur = new Notifier(
-//				"Bienvenu", 
-//				"Merci d'utiliser JMailing pour vos envoi de mailing avec attachement PDF.", 
-//				NotificationType.INFO
-//		);
-//		notifieur.start();
-		
+
+		// Notifier notifieur = new Notifier(
+		// "Bienvenu",
+		// "Merci d'utiliser JMailing pour vos envoi de mailing avec attachement PDF.",
+		// NotificationType.INFO
+		// );
+		// notifieur.start();
+
 	}
 }

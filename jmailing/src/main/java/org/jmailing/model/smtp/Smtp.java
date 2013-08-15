@@ -52,6 +52,17 @@ public interface Smtp {
 	 * @return the From Address
 	 */
 	public String getFromAddress();
+	
+	/**
+	 * @param from the From Label to set
+	 */
+	public void setFromLabel(String from);
+
+	
+	/**
+	 * @return the From Label
+	 */
+	public String getFromLabel();
 
 
 }

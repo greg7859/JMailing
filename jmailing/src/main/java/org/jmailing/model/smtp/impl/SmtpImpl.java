@@ -1,37 +1,22 @@
 package org.jmailing.model.smtp.impl;
 
-import javax.xml.bind.annotation.XmlAccessOrder;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorOrder;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.inject.Singleton;
 
-import org.jmailing.io.adapter.EncryptedStringXmlAdapter;
 import org.jmailing.model.smtp.Smtp;
 
-@XmlRootElement(name = "smtp-config")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlAccessorOrder(XmlAccessOrder.UNDEFINED)
+@Singleton
 public class SmtpImpl implements Smtp {
-	@XmlAttribute(required = true)
-	String host;
+	private String host;
 
-	@XmlAttribute(required = true)
-	String port;
+	private String port;
 
-	@XmlAttribute(required = true)
-	String fromAddress;
+	private String fromAddress;
 
-	@XmlElement(required = true)
-	@XmlJavaTypeAdapter(value = EncryptedStringXmlAdapter.class)
-	String login;
+	private String login;
 
-	@XmlElement(required = true)
-	@XmlJavaTypeAdapter(value = EncryptedStringXmlAdapter.class)
-	String password;
+	private String password;
+	
+	private String fromLabel;
 
 	/*
 	 * (non-Javadoc)
@@ -122,4 +107,16 @@ public class SmtpImpl implements Smtp {
 	public String getFromAddress() {
 		return this.fromAddress;
 	}
+
+	@Override
+	public void setFromLabel(String from) {
+	this.fromLabel=from;
+		
+	}
+
+	@Override
+	public String getFromLabel() {
+		return this.fromLabel;
+	}
+	
 }
