@@ -8,15 +8,19 @@ import org.jmailing.model.smtp.Smtp;
 public class SmtpImpl implements Smtp {
 	private String host;
 
-	private String port;
+	private String port = "25";
 
 	private String fromAddress;
 
 	private String login;
 
 	private String password;
-	
+
 	private String fromLabel;
+
+	private boolean ssl = false;
+
+	private boolean authentication = false;
 
 	/*
 	 * (non-Javadoc)
@@ -100,7 +104,7 @@ public class SmtpImpl implements Smtp {
 
 	@Override
 	public void setFromAddress(String from) {
-		this.fromAddress=from;
+		this.fromAddress = from;
 	}
 
 	@Override
@@ -110,13 +114,34 @@ public class SmtpImpl implements Smtp {
 
 	@Override
 	public void setFromLabel(String from) {
-	this.fromLabel=from;
-		
+		this.fromLabel = from;
+
 	}
 
 	@Override
 	public String getFromLabel() {
 		return this.fromLabel;
 	}
-	
+
+	@Override
+	public void setSSL(boolean state) {
+		this.ssl = state;
+	}
+
+	@Override
+	public boolean getSSL() {
+		return this.ssl;
+	}
+
+	@Override
+	public void setAuthentication(boolean state) {
+		this.authentication = state;
+
+	}
+
+	@Override
+	public boolean getAuthentication() {
+		return this.authentication;
+	}
+
 }

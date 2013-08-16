@@ -17,6 +17,7 @@ import javax.swing.KeyStroke;
 import org.jmailing.injector.JMailingModule;
 import org.jmailing.io.smtp.SmtpIO;
 import org.jmailing.model.smtp.Smtp;
+import org.jmailing.service.mail.EmailService;
 import org.jmailing.ui.about.AboutDialog;
 import org.jmailing.ui.smtp.SmtpDialog;
 
@@ -97,7 +98,9 @@ public class JMailingApplication {
 			public void mouseReleased(MouseEvent arg0) {
 				Smtp smtp = injector.getInstance(Smtp.class);
 				SmtpIO smtpIO = injector.getInstance(SmtpIO.class);
-				SmtpDialog smtpDialog = new SmtpDialog(smtp, smtpIO);
+				EmailService emailSvc = injector
+						.getInstance(EmailService.class);
+				SmtpDialog smtpDialog = new SmtpDialog(smtp, smtpIO, emailSvc);
 				smtpDialog.setVisible(true);
 			}
 		});

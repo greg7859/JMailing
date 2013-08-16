@@ -9,6 +9,8 @@ import org.jmailing.io.smtp.SmtpIO;
 import org.jmailing.io.smtp.impl.SmtpIOImpl;
 import org.jmailing.model.smtp.Smtp;
 import org.jmailing.model.smtp.impl.SmtpImpl;
+import org.jmailing.service.mail.EmailService;
+import org.jmailing.service.mail.impl.EmailServiceImpl;
 
 import com.google.inject.AbstractModule;
 
@@ -16,8 +18,12 @@ public class JMailingModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		// Model
 		bind(Smtp.class).to(SmtpImpl.class);
+
+		// Service
 		bind(SmtpIO.class).to(SmtpIOImpl.class);
+		bind(EmailService.class).to(EmailServiceImpl.class);
 
 		// Security
 		bind(StringEncryptor.class).to(StringEncryptorImpl.class);
@@ -28,5 +34,4 @@ public class JMailingModule extends AbstractModule {
 		bind(String.class).annotatedWith(SmtpConf.class).toInstance(smtpConf);
 
 	}
-
 }

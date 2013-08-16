@@ -33,6 +33,8 @@ public class SmtpIOImpl implements SmtpIO {
 
 	final static private String HOST = "smpt.host";
 	final static private String PORT = "smtp.port";
+	final static private String SSL = "smtp.ssl";
+	final static private String AUTHENTICATION = "smtp.auth";
 	final static private String USERNAME = "smtp.username";
 	final static private String PASSWORD = "smtp.password";
 	final static private String FROM_ADDRESS = "smtp.fromaddress";
@@ -49,6 +51,8 @@ public class SmtpIOImpl implements SmtpIO {
 		Properties prop = new Properties();
 		prop.put(HOST, smtp.getHost());
 		prop.put(PORT, smtp.getPort());
+		prop.put(SSL, new Boolean(smtp.getSSL()).toString());
+		prop.put(AUTHENTICATION, new Boolean(smtp.getAuthentication()).toString());
 		prop.put(USERNAME, encryptor.encrypt(smtp.getLogin()));
 		prop.put(PASSWORD, encryptor.encrypt(smtp.getPassword()));
 		prop.put(FROM_ADDRESS, smtp.getFromAddress());
@@ -76,6 +80,8 @@ public class SmtpIOImpl implements SmtpIO {
 		fis.close();
 		smtp.setHost((String) prop.get(HOST));
 		smtp.setPort((String) prop.get(PORT));
+		smtp.setSSL(Boolean.parseBoolean((String) prop.get(SSL)));
+		smtp.setAuthentication(Boolean.parseBoolean((String) prop.get(AUTHENTICATION)));
 		smtp.setLogin(encryptor.decrypt((String) prop.get(USERNAME)));
 		smtp.setPassword(encryptor.decrypt((String) prop.get(PASSWORD)));
 		smtp.setFromAddress((String) prop.get(FROM_ADDRESS));

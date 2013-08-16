@@ -23,6 +23,28 @@ public interface Smtp {
 	public void setPort(String port);
 
 	/**
+	 * @param state the SSL state to set
+	 */
+	public void setSSL(boolean state);
+
+	
+	/**
+	 * @return the SSL state
+	 */
+	public boolean getSSL();
+	
+	/**
+	 * @param state the Authentication state to set
+	 */
+	public void setAuthentication(boolean state);
+
+	
+	/**
+	 * @return the Authentication state
+	 */
+	public boolean getAuthentication();
+	
+	/**
 	 * @return the login
 	 */
 	public String getLogin();
