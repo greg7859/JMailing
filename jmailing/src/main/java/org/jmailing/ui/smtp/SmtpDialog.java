@@ -158,6 +158,7 @@ public class SmtpDialog extends JDialog {
 							tos.toArray(new String[tos.size()]),
 							"Test Message",
 							"This a message to test the connection.");
+					JOptionPane.showMessageDialog(null, "Your email was sent successfully", "Successful sent", JOptionPane.INFORMATION_MESSAGE);
 				} catch (EmailServiceException ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage(),
 							"Error during the send", JOptionPane.ERROR_MESSAGE);
