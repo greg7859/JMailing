@@ -209,7 +209,7 @@ public class SmtpDialog extends JDialog {
 		smtp.setHost(hostTF.getText());
 		smtp.setPort(portTF.getText());
 		smtp.setLogin(loginTF.getText());
-		smtp.setPassword(passwordTF.getText());
+		smtp.setPassword( new String(passwordTF.getPassword()));
 		smtp.setSSL(sslCB.getSelectedObjects() == null ? false : true);
 		smtp.setAuthentication(authenticationCB.getSelectedObjects() == null ? false
 				: true);
