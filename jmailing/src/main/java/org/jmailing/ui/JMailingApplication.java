@@ -12,13 +12,18 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jmailing.injector.JMailingModule;
 import org.jmailing.io.smtp.SmtpIO;
+import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.smtp.Smtp;
 import org.jmailing.service.mail.EmailService;
 import org.jmailing.ui.about.AboutDialog;
+import org.jmailing.ui.project.MailingProjectPanel;
 import org.jmailing.ui.smtp.SmtpDialog;
 
 import com.google.inject.Guice;
@@ -33,7 +38,18 @@ public class JMailingApplication {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-
+		try {
+			// Set System L&F
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (UnsupportedLookAndFeelException e) {
+			// handle exception
+		} catch (ClassNotFoundException e) {
+			// handle exception
+		} catch (InstantiationException e) {
+			// handle exception
+		} catch (IllegalAccessException e) {
+			// handle exception
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -79,6 +95,20 @@ public class JMailingApplication {
 		fileMenu.setMnemonic('F');
 		menuBar.add(fileMenu);
 
+		JMenuItem newMenuItem = new JMenuItem("New");
+		newMenuItem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				MailingProject project = injector
+						.getInstance(MailingProject.class);
+				MailingProjectPanel panel = new MailingProjectPanel(project);
+				frame.getContentPane().add(panel);
+				frame.setVisible(true);
+			}
+		});
+		fileMenu.add(newMenuItem);
+		fileMenu.add(new JSeparator());
+
 		JMenuItem quitMenuItem = new JMenuItem("Exit");
 		quitMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
@@ -92,7 +122,7 @@ public class JMailingApplication {
 		JMenu mnConfiguration = new JMenu("Configuration");
 		menuBar.add(mnConfiguration);
 
-		JMenuItem mntmMail = new JMenuItem("SMTP Server");
+		JMenuItem mntmMail = new JMenuItem("SMTP Settings");
 		mntmMail.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {

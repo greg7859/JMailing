@@ -17,17 +17,28 @@ public class ConfigHelper {
 		if (checkDir) {
 			checkDirectory(folder);
 		}
-		return folder+filename;
+		return folder + filename;
 	}
-	
-//	static public File getConfigPathFile(String filename, boolean checkDir) {
-//		String folder = getRootStore() + File.separator + Constants.CONF_FOLDER
-//				+ File.separator;
-//		if (checkDir) {
-//			checkDirectory(folder);
-//		}
-//		return new File(folder+filename);
-//	}
+
+	// static public File getConfigPathFile(String filename, boolean checkDir) {
+	// String folder = getRootStore() + File.separator + Constants.CONF_FOLDER
+	// + File.separator;
+	// if (checkDir) {
+	// checkDirectory(folder);
+	// }
+	// return new File(folder+filename);
+	// }
+
+	static public String getProjectPath() {
+		String folder = getRootStore() + File.separator
+				+ Constants.PROJECT_FOLDER + File.separator;
+		checkDirectory(folder);
+		return folder;
+	}
+
+	static public File getProjectPathFile() {
+		return new File(getProjectPath());
+	}
 
 	static public String getPath(String path) {
 		return getRootStore() + File.separator + path;
