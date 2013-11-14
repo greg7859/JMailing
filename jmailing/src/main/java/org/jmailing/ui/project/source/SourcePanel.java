@@ -3,6 +3,7 @@ package org.jmailing.ui.project.source;
 import javax.swing.JPanel;
 
 import org.jmailing.model.project.SourceMailingProjectPart;
+import org.jmailing.model.project.SourceVariable;
 
 import java.awt.BorderLayout;
 
@@ -24,13 +25,14 @@ public class SourcePanel extends JPanel implements SourceFilePanelListener, Sour
 		add(panel, BorderLayout.NORTH);
 		panel.setLayout(new BorderLayout(0, 0));
 
-		SourceFilePanel sourceFilePanel = new SourceFilePanel();
-		sourceFilePanel.addListener(this);
-		panel.add(sourceFilePanel, BorderLayout.NORTH);
 		
 		SourceVariablePanel sourceVariablePanel = new SourceVariablePanel(source.getSourceVariables());
 		sourceVariablePanel.addListener(this);
-		panel.add(sourceVariablePanel, BorderLayout.CENTER);
+		panel.add(sourceVariablePanel, BorderLayout.NORTH);
+		
+		SourceFilePanel sourceFilePanel = new SourceFilePanel();
+		sourceFilePanel.addListener(this);
+		panel.add(sourceFilePanel, BorderLayout.CENTER);
 		
 		
 	}
@@ -39,6 +41,11 @@ public class SourcePanel extends JPanel implements SourceFilePanelListener, Sour
 	public void fileSelected(String selectedFile) {
 		//TODO add update
 		System.out.println("Fichier selectionne:"+selectedFile);
+	}
+
+	@Override
+	public void variableIndexChanged(SourceVariable variable, int oldValue) {
+		System.out.println("Vairaible:"+variable.getName() + " new="+variable.getIndex() + " old="+oldValue);
 	}
 
 }
