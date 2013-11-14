@@ -1,6 +1,9 @@
 package org.jmailing.model.project;
 
 public interface SourceVariable {
+	
+	static int NO_INDEX = -1;
+	
 	enum Type {
 		MANDATORY, OPTIONAL
 	};
