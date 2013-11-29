@@ -4,9 +4,7 @@ import java.io.IOException;
 
 import org.jmailing.injector.JMailingModule;
 import org.jmailing.io.smtp.SmtpIO;
-import org.jmailing.io.smtp.impl.SmtpIOImpl;
 import org.jmailing.model.smtp.Smtp;
-import org.jmailing.model.smtp.impl.SmtpImpl;
 import org.junit.Assert;
 import org.junit.Test;
 

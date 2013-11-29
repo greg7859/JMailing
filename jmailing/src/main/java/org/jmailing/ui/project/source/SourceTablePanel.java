@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.JTableHeader;
 
 import org.jmailing.model.project.SourceVariable;
 import org.jmailing.model.source.Data;
