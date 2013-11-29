@@ -7,8 +7,10 @@ import org.jmailing.injector.annotation.SmtpConf;
 import org.jmailing.io.adapter.impl.StringEncryptorImpl;
 import org.jmailing.io.smtp.SmtpIO;
 import org.jmailing.io.smtp.impl.SmtpIOImpl;
+import org.jmailing.model.project.AttachmentMailingProjectPart;
 import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.project.SourceMailingProjectPart;
+import org.jmailing.model.project.impl.AttachmentMailingProjectPartImpl;
 import org.jmailing.model.project.impl.MailingProjectImpl;
 import org.jmailing.model.project.impl.SourceMailingProjectPartImpl;
 import org.jmailing.model.smtp.Smtp;
@@ -26,7 +28,8 @@ public class JMailingModule extends AbstractModule {
 		bind(Smtp.class).to(SmtpImpl.class);
 		bind(MailingProject.class).to(MailingProjectImpl.class);
 		bind(SourceMailingProjectPart.class).to(SourceMailingProjectPartImpl.class);
-
+		bind(AttachmentMailingProjectPart.class).to(AttachmentMailingProjectPartImpl.class);
+		
 		// Service
 		bind(SmtpIO.class).to(SmtpIOImpl.class);
 		bind(EmailService.class).to(EmailServiceImpl.class);

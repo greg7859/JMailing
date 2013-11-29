@@ -43,7 +43,7 @@ public class SourceVariablePanel extends JPanel {
 				textField = new JTextField();
 			} else {
 				textField = new JTextField(
-						Integer.toString(variable.getIndex()));
+						Integer.toString(variable.getIndex()+1));
 			}
 			TextFieldActionListener l = new TextFieldActionListener(variable);
 			textField.addActionListener(l);
@@ -103,7 +103,7 @@ public class SourceVariablePanel extends JPanel {
 				JTextField tf = (JTextField) o;
 				String txt = StringUtils.normalizeSpace(tf.getText());
 				if (!StringUtils.isBlank(txt)) {
-					newValue = Integer.parseInt(txt);
+					newValue = Integer.parseInt(txt)-1;
 				}
 				if (oldValue != newValue) {
 					v.setIndex(newValue);
