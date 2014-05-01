@@ -99,11 +99,6 @@ public class JMailingApplication {
 		newMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-//				MailingProject project = injector
-//						.getInstance(MailingProject.class);
-//				MailingProjectPanel panel = new MailingProjectPanel(project);
-//				frame.getContentPane().add(panel);
-//				frame.setVisible(true);
 				MailingProjectPanel panel = injector
 					.getInstance(MailingProjectPanel.class);
 				frame.getContentPane().add(panel);
@@ -117,6 +112,7 @@ public class JMailingApplication {
 		quitMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
+				System.exit(0);
 			}
 		});
 		quitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,

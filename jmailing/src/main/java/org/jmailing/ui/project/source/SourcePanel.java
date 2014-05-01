@@ -40,8 +40,6 @@ public class SourcePanel extends JPanel implements SourceFilePanelListener,
 
 	@Inject
 	public void init(MailingProject project) {
-		SourceMailingProjectPart source = project.getSourceMailingProjectPart();
-
 		setLayout(new BorderLayout(0, 0));
 
 		// Group File and variable
@@ -49,16 +47,12 @@ public class SourcePanel extends JPanel implements SourceFilePanelListener,
 		add(panel, BorderLayout.NORTH);
 		panel.setLayout(new BorderLayout(0, 0));
 
-		// SourceVariablePanel sourceVariablePanel = new
-		// SourceVariablePanel(source.getSourceVariables());
 		sourceVariablePanel.addListener(this);
 		panel.add(sourceVariablePanel, BorderLayout.NORTH);
 
-//		SourceFilePanel sourceFilePanel = new SourceFilePanel();
 		sourceFilePanel.addListener(this);
 		panel.add(sourceFilePanel, BorderLayout.CENTER);
 
-//		sourceTablePanel = new SourceTablePanel(source.getSourceVariables());
 		panel.add(sourceTablePanel, BorderLayout.SOUTH);
 
 	}
