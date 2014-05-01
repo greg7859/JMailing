@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.jmailing.injector.provider.DataProvider;
 import org.jmailing.model.source.Data;
 import org.jmailing.model.source.impl.DataImpl;
 
@@ -13,8 +16,8 @@ import com.google.common.base.Splitter;
 
 public class CsvFileReader implements DataFileReader {
 
-	// @Inject
-	// Injector injector = null;
+	@Inject
+	DataProvider provider;
 
 	public CsvFileReader() {
 	}
@@ -34,9 +37,7 @@ public class CsvFileReader implements DataFileReader {
 			String line = br.readLine();
 			while (line != null) {
 				Iterable<String> splited = Splitter.on(',').split(line);
-				// data = injector.getInstance(Data.class);
-				// FIXME Use injector
-				data = new DataImpl();
+				data = provider.get();
 				dataColl.add(data);
 				for (String string : splited) {
 					data.add(string);

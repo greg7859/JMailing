@@ -4,6 +4,7 @@ import org.jasypt.encryption.StringEncryptor;
 import org.jmailing.config.ConfigHelper;
 import org.jmailing.config.Constants;
 import org.jmailing.injector.annotation.SmtpConf;
+import org.jmailing.injector.provider.DataProvider;
 import org.jmailing.io.adapter.impl.StringEncryptorImpl;
 import org.jmailing.io.csv.CsvFileReader;
 import org.jmailing.io.csv.DataFileReader;
@@ -18,6 +19,7 @@ import org.jmailing.model.project.impl.MailingProjectImpl;
 import org.jmailing.model.project.impl.SourceMailingProjectPartImpl;
 import org.jmailing.model.smtp.Smtp;
 import org.jmailing.model.smtp.impl.SmtpImpl;
+import org.jmailing.model.source.Data;
 import org.jmailing.service.mail.EmailService;
 import org.jmailing.service.mail.impl.EmailServiceImpl;
 
@@ -33,6 +35,8 @@ public class JMailingModule extends AbstractModule {
 		bind(MailingProject.class).to(MailingProjectImpl.class);
 		bind(SourceMailingProjectPart.class).to(SourceMailingProjectPartImpl.class);
 		bind(AttachmentMailingProjectPart.class).to(AttachmentMailingProjectPartImpl.class);
+		
+		bind(Data.class).toProvider(DataProvider.class);
 		
 		// Service
 		bind(SmtpIO.class).to(SmtpIOImpl.class);
