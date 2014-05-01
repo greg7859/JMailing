@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.swing.table.AbstractTableModel;
 
 import org.jmailing.model.project.SourceVariable;
@@ -18,6 +19,7 @@ public class SourceTableModel extends AbstractTableModel {
 	private Map<Integer, SourceVariable> variables = new HashMap<>();
 	private List<Data> data=null;
 	
+	@Inject
 	public SourceTableModel(SourceVariable[] variables) {
 		for (SourceVariable sourceVariable : variables) {
 			this.variables.put(sourceVariable.getIndex(), sourceVariable);

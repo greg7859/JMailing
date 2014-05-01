@@ -6,6 +6,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
+import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,6 +31,7 @@ public class SourceVariablePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	@Inject
 	public SourceVariablePanel(SourceVariable[] variables) {
 		this.variables = variables;
 		setLayout(new SpringLayout());

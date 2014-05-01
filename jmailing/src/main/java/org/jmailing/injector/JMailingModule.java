@@ -5,11 +5,14 @@ import org.jmailing.config.ConfigHelper;
 import org.jmailing.config.Constants;
 import org.jmailing.injector.annotation.SmtpConf;
 import org.jmailing.io.adapter.impl.StringEncryptorImpl;
+import org.jmailing.io.csv.CsvFileReader;
+import org.jmailing.io.csv.DataFileReader;
 import org.jmailing.io.smtp.SmtpIO;
 import org.jmailing.io.smtp.impl.SmtpIOImpl;
 import org.jmailing.model.project.AttachmentMailingProjectPart;
 import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.project.SourceMailingProjectPart;
+import org.jmailing.model.project.SourceVariable;
 import org.jmailing.model.project.impl.AttachmentMailingProjectPartImpl;
 import org.jmailing.model.project.impl.MailingProjectImpl;
 import org.jmailing.model.project.impl.SourceMailingProjectPartImpl;
@@ -19,6 +22,7 @@ import org.jmailing.service.mail.EmailService;
 import org.jmailing.service.mail.impl.EmailServiceImpl;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 
 public class JMailingModule extends AbstractModule {
 
@@ -33,6 +37,7 @@ public class JMailingModule extends AbstractModule {
 		// Service
 		bind(SmtpIO.class).to(SmtpIOImpl.class);
 		bind(EmailService.class).to(EmailServiceImpl.class);
+		bind(DataFileReader.class).to(CsvFileReader.class);
 
 		// Security
 		bind(StringEncryptor.class).to(StringEncryptorImpl.class);
@@ -43,4 +48,9 @@ public class JMailingModule extends AbstractModule {
 		bind(String.class).annotatedWith(SmtpConf.class).toInstance(smtpConf);
 
 	}
+	
+	@Provides 
+	SourceVariable[] provideSourceMailingProjectPartt(MailingProject project) { 
+	    return project.getSourceMailingProjectPart().getSourceVariables();
+	  }
 }
