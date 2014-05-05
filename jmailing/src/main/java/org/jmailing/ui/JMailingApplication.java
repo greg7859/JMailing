@@ -19,7 +19,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jmailing.injector.JMailingModule;
 import org.jmailing.io.smtp.SmtpIO;
-import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.smtp.Smtp;
 import org.jmailing.service.mail.EmailService;
 import org.jmailing.ui.about.AboutDialog;

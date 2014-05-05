@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 
 import org.jmailing.io.csv.DataFileReader;
 import org.jmailing.model.project.MailingProject;
-import org.jmailing.model.project.SourceMailingProjectPart;
 import org.jmailing.model.project.SourceVariable;
 import org.jmailing.model.source.Data;
 

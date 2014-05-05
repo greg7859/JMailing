@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 import org.jmailing.injector.provider.DataProvider;
 import org.jmailing.model.source.Data;
-import org.jmailing.model.source.impl.DataImpl;
 
 import com.google.common.base.Splitter;
 

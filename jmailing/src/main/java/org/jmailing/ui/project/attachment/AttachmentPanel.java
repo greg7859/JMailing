@@ -1,32 +1,24 @@
 package org.jmailing.ui.project.attachment;
 
-import java.awt.BorderLayout;
-
-import javax.inject.Inject;
-import javax.swing.JPanel;
-
-import org.apache.commons.lang.StringUtils;
-import org.jmailing.model.project.AttachmentMailingProjectPart;
-import org.jmailing.model.project.MailingProject;
-import org.jmailing.model.project.SourceVariable;
-import org.jmailing.ui.filter.IntDocumentFilter;
-import org.jmailing.ui.project.source.SourceVariablePanelListener;
-
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-
-import java.awt.GridLayout;
-
-import javax.swing.JTextField;
-import javax.swing.text.PlainDocument;
-
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+
+import javax.inject.Inject;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.text.PlainDocument;
+
+import org.apache.commons.lang.StringUtils;
+import org.jmailing.model.project.AttachmentMailingProjectPart;
+import org.jmailing.model.project.MailingProject;
+import org.jmailing.ui.filter.IntDocumentFilter;
 
 public class AttachmentPanel extends JPanel {
 
