@@ -5,4 +5,6 @@ public interface MailingProject {
 	SourceMailingProjectPart getSourceMailingProjectPart();
 
 	AttachmentMailingProjectPart getAttachmentMailingProjectPart();
+
+	EmailMailingProjectPart getEMailMailingProjectPart();
 }

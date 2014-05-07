@@ -11,10 +11,12 @@ import org.jmailing.io.csv.DataFileReader;
 import org.jmailing.io.smtp.SmtpIO;
 import org.jmailing.io.smtp.impl.SmtpIOImpl;
 import org.jmailing.model.project.AttachmentMailingProjectPart;
+import org.jmailing.model.project.EmailMailingProjectPart;
 import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.project.SourceMailingProjectPart;
 import org.jmailing.model.project.SourceVariable;
 import org.jmailing.model.project.impl.AttachmentMailingProjectPartImpl;
+import org.jmailing.model.project.impl.EmailMailingProjectPartImpl;
 import org.jmailing.model.project.impl.MailingProjectImpl;
 import org.jmailing.model.project.impl.SourceMailingProjectPartImpl;
 import org.jmailing.model.smtp.Smtp;
@@ -35,6 +37,7 @@ public class JMailingModule extends AbstractModule {
 		bind(MailingProject.class).to(MailingProjectImpl.class);
 		bind(SourceMailingProjectPart.class).to(SourceMailingProjectPartImpl.class);
 		bind(AttachmentMailingProjectPart.class).to(AttachmentMailingProjectPartImpl.class);
+		bind(EmailMailingProjectPart.class).to(EmailMailingProjectPartImpl.class);
 		
 		bind(Data.class).toProvider(DataProvider.class);
 		

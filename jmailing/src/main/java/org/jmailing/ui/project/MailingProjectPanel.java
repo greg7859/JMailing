@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.jmailing.ui.project.attachment.AttachmentPanel;
+import org.jmailing.ui.project.email.EmailPanel;
 import org.jmailing.ui.project.source.SourcePanel;
 
 public class MailingProjectPanel extends JPanel {
@@ -20,6 +21,8 @@ public class MailingProjectPanel extends JPanel {
 	SourcePanel sourcePanel;
 	@Inject
 	AttachmentPanel attachmentPanel;
+	@Inject
+	EmailPanel emailPanel;
 
 	/**
 	 * Create the panel.
@@ -35,6 +38,7 @@ public class MailingProjectPanel extends JPanel {
 		add(tabbedPane);
 		tabbedPane.addTab("Source", sourcePanel);
 		tabbedPane.addTab("Attachment", attachmentPanel);
+		tabbedPane.addTab("EMail", emailPanel);
 
 	}
 
