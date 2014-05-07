@@ -9,7 +9,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.inject.Inject;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -64,6 +63,10 @@ public class AttachmentPanel extends JPanel {
 		gbc_nbOfPage.gridy = 0;
 		add(nbOfPage, gbc_nbOfPage);
 		nbOfPage.setColumns(10);
+		NumberPageActionListener npal = new NumberPageActionListener(attachmentPart);
+		nbOfPage.addActionListener(npal);
+		nbOfPage.addFocusListener(npal);
+
 		
 		JLabel lblNewLabel = new JLabel("Filename format");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
@@ -82,6 +85,9 @@ public class AttachmentPanel extends JPanel {
 		gbc_filenameFormat.gridy = 1;
 		add(filenameFormat, gbc_filenameFormat);
 		filenameFormat.setColumns(20);
+		FormatActionListener fal = new FormatActionListener(attachmentPart);
+		filenameFormat.addActionListener(fal);
+		filenameFormat.addFocusListener(fal);
 	}
 	
 	class NumberPageActionListener implements ActionListener, FocusListener {
