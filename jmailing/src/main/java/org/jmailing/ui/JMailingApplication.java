@@ -25,6 +25,7 @@ import org.jmailing.io.project.MailingProjectRetriever;
 import org.jmailing.io.project.MailingProjectStorer;
 import org.jmailing.io.project.ProjectNameList;
 import org.jmailing.io.smtp.SmtpIO;
+import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.smtp.Smtp;
 import org.jmailing.service.mail.EmailService;
 import org.jmailing.ui.about.AboutDialog;
@@ -106,6 +107,7 @@ public class JMailingApplication {
 			public void mouseReleased(MouseEvent arg0) {
 				MailingProjectPanel panel = injector
 						.getInstance(MailingProjectPanel.class);
+				frame.getContentPane().removeAll();
 				frame.getContentPane().add(panel);
 				frame.setVisible(true);
 			}
@@ -137,6 +139,7 @@ public class JMailingApplication {
 						storer.load(name);
 						MailingProjectPanel panel = injector
 								.getInstance(MailingProjectPanel.class);
+						frame.getContentPane().removeAll();
 						frame.getContentPane().add(panel);
 						frame.setVisible(true);
 
@@ -156,8 +159,9 @@ public class JMailingApplication {
 		saveMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				// FIXME Get the name from the project
-				save(null);
+				MailingProject project = injector
+						.getInstance(MailingProject.class);
+				save(project.getName());
 			}
 		});
 		fileMenu.add(saveMenuItem);
@@ -238,6 +242,9 @@ public class JMailingApplication {
 			MailingProjectStorer storer = injector
 					.getInstance(MailingProjectStorer.class);
 			try {
+				MailingProject project = injector
+						.getInstance(MailingProject.class);
+				project.setName(name);
 				storer.save(name);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(frame, "Error during the save",

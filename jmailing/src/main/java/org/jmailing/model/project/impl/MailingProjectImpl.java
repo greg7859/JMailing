@@ -13,16 +13,18 @@ import org.jmailing.model.project.SourceMailingProjectPart;
 public class MailingProjectImpl implements MailingProject {
 
 	@Inject
-	SourceMailingProjectPart source;
+	private SourceMailingProjectPart source;
 	
 	@Inject
-	AttachmentMailingProjectPart attachment;
+	private AttachmentMailingProjectPart attachment;
 	
 	@Inject
-	EmailMailingProjectPart email;
+	private EmailMailingProjectPart email;
 	
 	@Inject
-	MailingConfigurationPart mailing;
+	private MailingConfigurationPart mailing;
+	
+	private String name=null;
 
 	@Override
 	public SourceMailingProjectPart getSourceMailingProjectPart() {
@@ -42,6 +44,16 @@ public class MailingProjectImpl implements MailingProject {
 	@Override
 	public MailingConfigurationPart getMailingConfigurationPart() {
 		return mailing;
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name=name;
 	}
 
 }
