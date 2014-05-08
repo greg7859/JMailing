@@ -54,12 +54,12 @@ public class SourceVariablePanel extends JPanel {
 			doc.setDocumentFilter(new IntDocumentFilter());
 			add(textField);
 
-			JLabel type = new JLabel(variable.getType().name());
-			add(type);
+//			JLabel type = new JLabel(variable.getType().name());
+//			add(type);
 
 		}
 
-		SpringUtilities.makeGrid(this, variables.length, 3, // rows, cols
+		SpringUtilities.makeGrid(this, variables.length, 2, // rows, cols
 				5, 5, // initialX, initialY
 				5, 5);// xPad, yPad
 
