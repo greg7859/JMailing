@@ -17,11 +17,11 @@ public class SourceMailingProjectPartImpl implements SourceMailingProjectPart {
 		variables.add(s);
 		s = new SourceVariableImpl("FIRST_NAME", Type.MANDATORY);
 		variables.add(s);
-		s = new SourceVariableImpl("EMAIL", Type.MANDATORY);
-		variables.add(s);
-		s = new SourceVariableImpl("EMAIL1", Type.OPTIONAL);
+		s = new SourceVariableImpl("EMAIL1", Type.MANDATORY);
 		variables.add(s);
 		s = new SourceVariableImpl("EMAIL2", Type.OPTIONAL);
+		variables.add(s);
+		s = new SourceVariableImpl("EMAIL3", Type.OPTIONAL);
 		variables.add(s);
 	}
 
