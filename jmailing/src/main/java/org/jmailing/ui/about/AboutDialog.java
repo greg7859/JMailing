@@ -1,13 +1,13 @@
 package org.jmailing.ui.about;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
+import javax.swing.JTextPane;
+import javax.swing.text.html.HTMLEditorKit;
 
 public class AboutDialog extends JDialog {
 
@@ -20,18 +20,19 @@ public class AboutDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	public AboutDialog() {
+		setTitle("About");
 		setModal(true);
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		
-		JLabel lblNewLabel = new JLabel("JMailing V0.1");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
-		getContentPane().add(lblNewLabel, BorderLayout.NORTH);
-		
-		JLabel lblCeLogicielPermet = new JLabel("This software helps you to send a mailing with PDF attachment file.\n The information come from CSV File");
-		getContentPane().add(lblCeLogicielPermet, BorderLayout.WEST);
-		
+
+		JTextPane lblCeLogicielPermet = new JTextPane();
+		lblCeLogicielPermet.setEditable(false);
+		lblCeLogicielPermet.setEditorKit(new HTMLEditorKit());
+		lblCeLogicielPermet.setText(
+				"<h1>JMailing V0.1</h1><p>This software helps you to send a mailing with PDF attachment file.</p><p>The information come from CSV File</p>");
+		getContentPane().add(lblCeLogicielPermet, BorderLayout.CENTER);
+
 		JButton btnOk = new JButton("OK");
 		btnOk.addMouseListener(new MouseAdapter() {
 			@Override
