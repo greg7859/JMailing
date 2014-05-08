@@ -13,5 +13,5 @@ import javax.inject.Qualifier;
 @Qualifier
 @Target({ FIELD, PARAMETER, METHOD })
 @Retention(RUNTIME)
-public @interface SmtpConf {
+public @interface ProjectPath {
 }

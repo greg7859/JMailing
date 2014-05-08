@@ -13,16 +13,11 @@ public class SourceMailingProjectPartImpl implements SourceMailingProjectPart {
 	private ArrayList<SourceVariable> variables = new ArrayList<>();
 
 	public SourceMailingProjectPartImpl() {
-		SourceVariable s = new SourceVariableImpl("NAME", Type.MANDATORY);
-		variables.add(s);
-		s = new SourceVariableImpl("FIRST_NAME", Type.MANDATORY);
-		variables.add(s);
-		s = new SourceVariableImpl("EMAIL1", Type.MANDATORY);
-		variables.add(s);
-		s = new SourceVariableImpl("EMAIL2", Type.OPTIONAL);
-		variables.add(s);
-		s = new SourceVariableImpl("EMAIL3", Type.OPTIONAL);
-		variables.add(s);
+		registerSourceVariable("NAME", Type.MANDATORY) ;
+		registerSourceVariable("FIRST_NAME", Type.MANDATORY) ;
+		registerSourceVariable("EMAIL1", Type.MANDATORY) ;
+		registerSourceVariable("EMAIL2", Type.OPTIONAL) ;
+		registerSourceVariable("EMAIL3", Type.OPTIONAL) ;
 	}
 
 	@Override
@@ -38,6 +33,21 @@ public class SourceMailingProjectPartImpl implements SourceMailingProjectPart {
 	@Override
 	public SourceVariable[] getSourceVariables() {
 		return variables.toArray(new SourceVariable[variables.size()]);
+	}
+
+	@Override
+	public SourceVariable getSourceVariable(String name) {
+		for (SourceVariable sv : variables) {
+			if (name.equals(sv.getName()))
+				return sv;
+		}
+		return registerSourceVariable(name, Type.OPTIONAL) ;
+	}
+	
+	private SourceVariable registerSourceVariable(String name, Type type) {
+		SourceVariable s = new SourceVariableImpl(name, type);
+		variables.add(s);
+		return s ;
 	}
 
 }

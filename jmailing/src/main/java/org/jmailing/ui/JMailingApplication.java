@@ -6,18 +6,24 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.apache.commons.lang.StringUtils;
 import org.jmailing.injector.JMailingModule;
+import org.jmailing.io.project.MailingProjectRetriever;
+import org.jmailing.io.project.MailingProjectStorer;
+import org.jmailing.io.project.ProjectNameList;
 import org.jmailing.io.smtp.SmtpIO;
 import org.jmailing.model.smtp.Smtp;
 import org.jmailing.service.mail.EmailService;
@@ -93,18 +99,79 @@ public class JMailingApplication {
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic('F');
 		menuBar.add(fileMenu);
-
-		JMenuItem newMenuItem = new JMenuItem("New");
+		// New Project
+		JMenuItem newMenuItem = new JMenuItem("New project");
 		newMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				MailingProjectPanel panel = injector
-					.getInstance(MailingProjectPanel.class);
+						.getInstance(MailingProjectPanel.class);
 				frame.getContentPane().add(panel);
 				frame.setVisible(true);
 			}
 		});
 		fileMenu.add(newMenuItem);
+		// Load
+		JMenuItem loadMenuItem = new JMenuItem("Load project");
+		loadMenuItem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				ProjectNameList pList = injector
+						.getInstance(ProjectNameList.class);
+				Collection<String> list = pList.list();
+
+				String[] projectNames = list.toArray(new String[list.size()]);
+
+				String name = (String) JOptionPane.showInputDialog(frame,
+						"Choose the project...", "Select the project to load",
+						JOptionPane.QUESTION_MESSAGE, null, // Use
+															// default
+															// icon
+						projectNames, // Array of choices
+						projectNames[0]); // Initial choice
+				if (StringUtils.isNotBlank(name)) {
+					// FIXME : Check if the project does not exist
+					MailingProjectRetriever storer = injector
+							.getInstance(MailingProjectRetriever.class);
+					try {
+						storer.load(name);
+						MailingProjectPanel panel = injector
+								.getInstance(MailingProjectPanel.class);
+						frame.getContentPane().add(panel);
+						frame.setVisible(true);
+
+					} catch (IOException e) {
+						JOptionPane.showMessageDialog(frame,
+								"Error during the loading", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		fileMenu.add(loadMenuItem);
+
+		// Save
+		JMenuItem saveMenuItem = new JMenuItem("Save project");
+		saveMenuItem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// FIXME Get the name from the project
+				save(null);
+			}
+		});
+		fileMenu.add(saveMenuItem);
+
+		// Save
+		JMenuItem saveAsMenuItem = new JMenuItem("Save As project");
+		saveAsMenuItem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				save(null);
+			}
+		});
+		fileMenu.add(saveAsMenuItem);
+
 		fileMenu.add(new JSeparator());
 
 		JMenuItem quitMenuItem = new JMenuItem("Exit");
@@ -159,5 +226,24 @@ public class JMailingApplication {
 		// );
 		// notifieur.start();
 
+	}
+
+	private void save(String name) {
+		if (name == null) {
+			name = JOptionPane.showInputDialog(frame, "Name");
+		}
+
+		if (StringUtils.isNotBlank(name)) {
+			// FIXME : Check if the project does not exist
+			MailingProjectStorer storer = injector
+					.getInstance(MailingProjectStorer.class);
+			try {
+				storer.save(name);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(frame, "Error during the save",
+						"Error", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+		}
 	}
 }

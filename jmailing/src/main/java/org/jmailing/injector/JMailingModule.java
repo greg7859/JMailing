@@ -3,11 +3,19 @@ package org.jmailing.injector;
 import org.jasypt.encryption.StringEncryptor;
 import org.jmailing.config.ConfigHelper;
 import org.jmailing.config.Constants;
+import org.jmailing.injector.annotation.Extension;
+import org.jmailing.injector.annotation.ProjectPath;
 import org.jmailing.injector.annotation.SmtpConf;
 import org.jmailing.injector.provider.DataProvider;
 import org.jmailing.io.adapter.impl.StringEncryptorImpl;
 import org.jmailing.io.csv.CsvFileReader;
 import org.jmailing.io.csv.DataFileReader;
+import org.jmailing.io.project.MailingProjectRetriever;
+import org.jmailing.io.project.MailingProjectStorer;
+import org.jmailing.io.project.ProjectNameList;
+import org.jmailing.io.project.impl.MailingProjectRetrieverImpl;
+import org.jmailing.io.project.impl.MailingProjectStorerImpl;
+import org.jmailing.io.project.impl.ProjectNameListImpl;
 import org.jmailing.io.smtp.SmtpIO;
 import org.jmailing.io.smtp.impl.SmtpIOImpl;
 import org.jmailing.model.project.AttachmentMailingProjectPart;
@@ -46,6 +54,9 @@ public class JMailingModule extends AbstractModule {
 		
 		// Service
 		bind(SmtpIO.class).to(SmtpIOImpl.class);
+		bind(MailingProjectStorer.class).to(MailingProjectStorerImpl.class);
+		bind(MailingProjectRetriever.class).to(MailingProjectRetrieverImpl.class);
+		bind(ProjectNameList.class).to(ProjectNameListImpl.class);
 		bind(EmailService.class).to(EmailServiceImpl.class);
 		bind(DataFileReader.class).to(CsvFileReader.class);
 
@@ -56,6 +67,9 @@ public class JMailingModule extends AbstractModule {
 		String smtpConf = ConfigHelper.getConfigPath(
 				Constants.EMAIL_CFG_RESOURCE, true);
 		bind(String.class).annotatedWith(SmtpConf.class).toInstance(smtpConf);
+		String projectPath = ConfigHelper.getProjectPath();
+		bind(String.class).annotatedWith(ProjectPath.class).toInstance(projectPath);
+		bind(String.class).annotatedWith(Extension.class).toInstance(Constants.EXTENSION);
 
 	}
 	

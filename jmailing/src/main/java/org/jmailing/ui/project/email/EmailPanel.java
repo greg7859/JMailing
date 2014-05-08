@@ -61,6 +61,7 @@ public class EmailPanel extends JPanel {
 		gbc_toField.gridy = 0;
 		add(toField, gbc_toField);
 		toField.setColumns(10);
+		toField.setText(emailPart.getTo());
 		TextComponentListener toTal = new TextComponentListener(emailPart, FieldType.TO);
 		toField.addActionListener(toTal);
 		toField.addFocusListener(toTal);
@@ -82,6 +83,7 @@ public class EmailPanel extends JPanel {
 		gbc_ccField.gridy = 1;
 		add(ccField, gbc_ccField);
 		ccField.setColumns(10);
+		ccField.setText(emailPart.getCc());
 		TextComponentListener ccTal = new TextComponentListener(emailPart, FieldType.CC);
 		ccField.addActionListener(ccTal);
 		ccField.addFocusListener(ccTal);

@@ -6,5 +6,6 @@ public interface SourceMailingProjectPart {
 	void setFilename(String filename);
 	
 	SourceVariable[] getSourceVariables();
+	SourceVariable getSourceVariable(String name);
 	
 }

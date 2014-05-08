@@ -4,7 +4,7 @@ import java.io.File;
 
 public class ConfigHelper {
 
-	static private void checkDirectory(String folder) {
+	static public void checkDirectory(String folder) {
 		File f = new File(folder);
 		if (f.exists() == false) {
 			f.mkdirs();
