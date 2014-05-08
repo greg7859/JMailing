@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 
 import org.jmailing.model.project.AttachmentMailingProjectPart;
 import org.jmailing.model.project.EmailMailingProjectPart;
+import org.jmailing.model.project.MailingConfigurationPart;
 import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.project.SourceMailingProjectPart;
 
@@ -19,6 +20,9 @@ public class MailingProjectImpl implements MailingProject {
 	
 	@Inject
 	EmailMailingProjectPart email;
+	
+	@Inject
+	MailingConfigurationPart mailing;
 
 	@Override
 	public SourceMailingProjectPart getSourceMailingProjectPart() {
@@ -33,6 +37,11 @@ public class MailingProjectImpl implements MailingProject {
 	@Override
 	public EmailMailingProjectPart getEMailMailingProjectPart() {
 		return email;
+	}
+	
+	@Override
+	public MailingConfigurationPart getMailingConfigurationPart() {
+		return mailing;
 	}
 
 }
