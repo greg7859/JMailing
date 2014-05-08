@@ -58,7 +58,7 @@ public class AttachmentPanel extends JPanel {
 		GridBagConstraints gbc_nbOfPage = new GridBagConstraints();
 		gbc_lblNumberOfPage.anchor = GridBagConstraints.EAST;
 		gbc_nbOfPage.fill = GridBagConstraints.HORIZONTAL;
-		gbc_nbOfPage.insets = new Insets(0, 0, 5, 0);
+		gbc_nbOfPage.insets = new Insets(0, 0, 5, 5);
 		gbc_nbOfPage.gridx = 1;
 		gbc_nbOfPage.gridy = 0;
 		add(nbOfPage, gbc_nbOfPage);
@@ -81,6 +81,7 @@ public class AttachmentPanel extends JPanel {
 		GridBagConstraints gbc_filenameFormat = new GridBagConstraints();
 		gbc_filenameFormat.anchor = GridBagConstraints.NORTH;
 		gbc_filenameFormat.fill = GridBagConstraints.HORIZONTAL;
+		gbc_filenameFormat.insets = new Insets(0, 0, 0, 5);
 		gbc_filenameFormat.gridx = 1;
 		gbc_filenameFormat.gridy = 1;
 		add(filenameFormat, gbc_filenameFormat);
