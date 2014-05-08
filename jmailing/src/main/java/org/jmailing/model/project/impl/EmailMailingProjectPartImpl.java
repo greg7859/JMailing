@@ -13,8 +13,30 @@ import org.jmailing.model.project.EmailMailingProjectPart;
  */
 public class EmailMailingProjectPartImpl implements EmailMailingProjectPart {
 
-	String title;
-	String body;
+	private String to;
+	private String cc;
+	private String title;
+	private String body;
+
+	@Override
+	public String getTo() {
+		return to;
+	}
+
+	@Override
+	public void setTo(String to) {
+		this.to = to;
+	}
+
+	@Override
+	public String getCc() {
+		return cc;
+	}
+
+	@Override
+	public void setCc(String cc) {
+		this.cc = cc;
+	}
 
 	/**
 	 * 
