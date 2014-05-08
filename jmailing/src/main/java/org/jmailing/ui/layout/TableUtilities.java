@@ -8,6 +8,13 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+/**
+ * Utilities to compute the size of a column table.
+ * <br/><br/>
+ * <b>Source</b> :
+ * http://www.java2s.com/Code/Java/Swing-Components/CalculatedColumnTable.htm
+ *  
+ */
 public class TableUtilities {
 	// Calculate the required width of a table column
 	public static int calculateColumnWidth(JTable table, int columnIndex) {
