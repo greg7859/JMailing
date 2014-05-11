@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -49,6 +50,7 @@ public class SmtpDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	@Inject
 	public SmtpDialog(Smtp smtp, SmtpIO smtpIO, EmailService emailSvc) {
 		this.smtp = smtp;
 		this.smtpIO = smtpIO;
@@ -158,7 +160,9 @@ public class SmtpDialog extends JDialog {
 							tos.toArray(new String[tos.size()]),
 							"Test Message",
 							"This a message to test the connection.");
-					JOptionPane.showMessageDialog(null, "Your email was sent successfully", "Successful sent", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"Your email was sent successfully",
+							"Successful sent", JOptionPane.INFORMATION_MESSAGE);
 				} catch (EmailServiceException ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage(),
 							"Error during the send", JOptionPane.ERROR_MESSAGE);
@@ -210,7 +214,7 @@ public class SmtpDialog extends JDialog {
 		smtp.setHost(hostTF.getText());
 		smtp.setPort(portTF.getText());
 		smtp.setLogin(loginTF.getText());
-		smtp.setPassword( new String(passwordTF.getPassword()));
+		smtp.setPassword(new String(passwordTF.getPassword()));
 		smtp.setSSL(sslCB.getSelectedObjects() == null ? false : true);
 		smtp.setAuthentication(authenticationCB.getSelectedObjects() == null ? false
 				: true);

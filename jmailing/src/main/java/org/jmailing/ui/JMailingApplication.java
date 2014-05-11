@@ -126,11 +126,8 @@ public class JMailingApplication {
 
 				String name = (String) JOptionPane.showInputDialog(frame,
 						"Choose the project...", "Select the project to load",
-						JOptionPane.QUESTION_MESSAGE, null, // Use
-															// default
-															// icon
-						projectNames, // Array of choices
-						projectNames[0]); // Initial choice
+						JOptionPane.QUESTION_MESSAGE, null, projectNames,
+						projectNames[0]);
 				if (StringUtils.isNotBlank(name)) {
 					// FIXME : Check if the project does not exist
 					MailingProjectRetriever storer = injector
@@ -196,11 +193,7 @@ public class JMailingApplication {
 		mntmMail.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				Smtp smtp = injector.getInstance(Smtp.class);
-				SmtpIO smtpIO = injector.getInstance(SmtpIO.class);
-				EmailService emailSvc = injector
-						.getInstance(EmailService.class);
-				SmtpDialog smtpDialog = new SmtpDialog(smtp, smtpIO, emailSvc);
+				SmtpDialog smtpDialog = injector.getInstance(SmtpDialog.class);
 				smtpDialog.setVisible(true);
 			}
 		});
