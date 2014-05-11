@@ -43,7 +43,7 @@ public class MailingConfigurationPanel extends JPanel {
 
 		JLabel lblNbMailPerHour = new JLabel("Number mail per hour");
 		GridBagConstraints gbc_lblTo = new GridBagConstraints();
-		gbc_lblTo.anchor = GridBagConstraints.NORTHEAST;
+		gbc_lblTo.anchor = GridBagConstraints.EAST;
 		gbc_lblTo.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTo.gridx = 0;
 		gbc_lblTo.gridy = 0;
