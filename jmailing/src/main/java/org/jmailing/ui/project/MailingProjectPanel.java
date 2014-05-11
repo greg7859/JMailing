@@ -6,10 +6,11 @@ import javax.inject.Inject;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import org.jmailing.ui.project.attachment.AttachmentPanel;
-import org.jmailing.ui.project.email.EmailPanel;
-import org.jmailing.ui.project.mailing.MailingConfigurationPanel;
-import org.jmailing.ui.project.source.SourcePanel;
+import org.jmailing.injector.annotation.Campaign;
+import org.jmailing.injector.annotation.Csv;
+import org.jmailing.injector.annotation.Email;
+import org.jmailing.injector.annotation.Mailing;
+import org.jmailing.injector.annotation.Pdf;
 
 public class MailingProjectPanel extends JPanel {
 
@@ -19,13 +20,24 @@ public class MailingProjectPanel extends JPanel {
 	private static final long serialVersionUID = 3296779370121320000L;
 
 	@Inject
-	SourcePanel sourcePanel;
+	@Csv
+	JPanel sourcePanel;
+	
 	@Inject
-	AttachmentPanel attachmentPanel;
+	@Pdf
+	JPanel attachmentPanel;
+	
 	@Inject
-	EmailPanel emailPanel;
+	@Email
+	JPanel emailPanel;
+	
 	@Inject
-	MailingConfigurationPanel mailingPanel;
+	@Mailing
+	JPanel mailingPanel;
+	
+	@Inject
+	@Campaign
+	JPanel campaignPanel;
 
 	/**
 	 * Create the panel.
@@ -43,6 +55,7 @@ public class MailingProjectPanel extends JPanel {
 		tabbedPane.addTab("Attachment", attachmentPanel);
 		tabbedPane.addTab("EMail", emailPanel);
 		tabbedPane.addTab("Mailing", mailingPanel);
+		tabbedPane.addTab("Campaign", campaignPanel);
 
 	}
 

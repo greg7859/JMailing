@@ -7,12 +7,15 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 
+import org.jmailing.injector.annotation.Csv;
 import org.jmailing.io.csv.DataFileReader;
 import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.project.SourceVariable;
 import org.jmailing.model.source.Data;
+import org.jmailing.ui.common.panel.FilePanel;
+import org.jmailing.ui.common.panel.FilePanelListener;
 
-public class SourcePanel extends JPanel implements SourceFilePanelListener,
+public class SourcePanel extends JPanel implements FilePanelListener,
 		SourceVariablePanelListener {
 
 	@Inject
@@ -28,8 +31,8 @@ public class SourcePanel extends JPanel implements SourceFilePanelListener,
 	@Inject
 	SourceVariablePanel sourceVariablePanel;
 	
-	@Inject
-	SourceFilePanel sourceFilePanel;
+	@Inject @Csv
+	FilePanel sourceFilePanel;
 
 	/**
 	 * Create the panel.

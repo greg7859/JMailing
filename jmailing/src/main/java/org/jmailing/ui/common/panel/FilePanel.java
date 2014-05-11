@@ -1,4 +1,4 @@
-package org.jmailing.ui.project.source;
+package org.jmailing.ui.common.panel;
 
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
@@ -16,9 +16,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jmailing.config.ConfigHelper;
 
-public class SourceFilePanel extends JPanel {
+public class FilePanel extends JPanel {
+	
+	protected String desc = null;
+	protected String extension = null;
 
-	ArrayList<SourceFilePanelListener> listeners = new ArrayList<>();
+	ArrayList<FilePanelListener> listeners = new ArrayList<>();
 
 	/**
 	 * 
@@ -29,7 +32,7 @@ public class SourceFilePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public SourceFilePanel() {
+	public FilePanel() {
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 		JLabel lblFile = new JLabel("File:");
@@ -48,14 +51,14 @@ public class SourceFilePanel extends JPanel {
 			public void mouseReleased(MouseEvent arg0) {
 				JFileChooser chooser = new JFileChooser(ConfigHelper
 						.getProjectPathFile());
-				chooser.setFileFilter(new FileNameExtensionFilter("Excel text format (.csv)","csv"));
+				chooser.setFileFilter(new FileNameExtensionFilter(desc,extension));
 				chooser.setAcceptAllFileFilterUsed(false);
-				int returnVal = chooser.showOpenDialog(SourceFilePanel.this);
+				int returnVal = chooser.showOpenDialog(FilePanel.this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					String filename = chooser.getSelectedFile()
 							.getAbsolutePath();
 					filenameTxt.setText(filename);
-					for (SourceFilePanelListener listener : listeners) {
+					for (FilePanelListener listener : listeners) {
 						listener.fileSelected(filename);
 					}
 				}
@@ -67,13 +70,13 @@ public class SourceFilePanel extends JPanel {
 
 	}
 
-	public void addListener(SourceFilePanelListener listener) {
+	public void addListener(FilePanelListener listener) {
 		if (listener != null) {
 			listeners.add(listener);
 		}
 	}
 
-	public void removeListener(SourceFilePanelListener listener) {
+	public void removeListener(FilePanelListener listener) {
 		if (listener != null) {
 			listeners.remove(listener);
 		}
