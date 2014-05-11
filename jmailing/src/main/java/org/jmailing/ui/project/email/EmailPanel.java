@@ -46,7 +46,7 @@ public class EmailPanel extends JPanel {
 
 		JLabel lblTo = new JLabel("To");
 		GridBagConstraints gbc_lblTo = new GridBagConstraints();
-		gbc_lblTo.anchor = GridBagConstraints.NORTHEAST;
+		gbc_lblTo.anchor = GridBagConstraints.EAST;
 		gbc_lblTo.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTo.gridx = 0;
 		gbc_lblTo.gridy = 0;
@@ -68,7 +68,7 @@ public class EmailPanel extends JPanel {
 
 		JLabel lblCC = new JLabel("CC");
 		GridBagConstraints gbc_lblCC = new GridBagConstraints();
-		gbc_lblCC.anchor = GridBagConstraints.NORTHEAST;
+		gbc_lblCC.anchor = GridBagConstraints.EAST;
 		gbc_lblCC.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCC.gridx = 0;
 		gbc_lblCC.gridy = 1;
@@ -90,7 +90,7 @@ public class EmailPanel extends JPanel {
 
 		JLabel lblTitle = new JLabel("Title");
 		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
-		gbc_lblTitle.anchor = GridBagConstraints.NORTHEAST;
+		gbc_lblTitle.anchor = GridBagConstraints.EAST;
 		gbc_lblTitle.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTitle.gridx = 0;
 		gbc_lblTitle.gridy = 2;
@@ -112,7 +112,7 @@ public class EmailPanel extends JPanel {
 
 		JLabel lblBody = new JLabel("Body");
 		GridBagConstraints gbc_lblBody = new GridBagConstraints();
-		gbc_lblBody.anchor = GridBagConstraints.NORTHEAST;
+		gbc_lblBody.anchor = GridBagConstraints.EAST;
 		gbc_lblBody.fill = GridBagConstraints.BOTH;
 		gbc_lblBody.insets = new Insets(0, 0, 5, 5);
 		gbc_lblBody.gridx = 0;
