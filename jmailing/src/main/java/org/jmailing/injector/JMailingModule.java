@@ -13,7 +13,11 @@ import org.jmailing.injector.annotation.Mailing;
 import org.jmailing.injector.annotation.Pdf;
 import org.jmailing.injector.annotation.ProjectPath;
 import org.jmailing.injector.annotation.SmtpConf;
+import org.jmailing.injector.annotation.VariablePrefix;
+import org.jmailing.injector.annotation.VariableSuffix;
+import org.jmailing.injector.provider.AttachmentProvider;
 import org.jmailing.injector.provider.DataProvider;
+import org.jmailing.injector.provider.EMailProvider;
 import org.jmailing.io.adapter.impl.StringEncryptorImpl;
 import org.jmailing.io.csv.CsvFileReader;
 import org.jmailing.io.csv.DataFileReader;
@@ -25,6 +29,8 @@ import org.jmailing.io.project.impl.MailingProjectStorerImpl;
 import org.jmailing.io.project.impl.ProjectNameListImpl;
 import org.jmailing.io.smtp.SmtpIO;
 import org.jmailing.io.smtp.impl.SmtpIOImpl;
+import org.jmailing.model.email.Attachment;
+import org.jmailing.model.email.EMail;
 import org.jmailing.model.project.AttachmentMailingProjectPart;
 import org.jmailing.model.project.EmailMailingProjectPart;
 import org.jmailing.model.project.MailingConfigurationPart;
@@ -41,6 +47,10 @@ import org.jmailing.model.smtp.impl.SmtpImpl;
 import org.jmailing.model.source.Data;
 import org.jmailing.service.mail.EmailService;
 import org.jmailing.service.mail.impl.EmailServiceImpl;
+import org.jmailing.service.mailing.AttachmentSplitter;
+import org.jmailing.service.mailing.MailingGenerator;
+import org.jmailing.service.mailing.impl.MailingGeneratorImpl;
+import org.jmailing.service.mailing.impl.PdfAttachmentSplitterImpl;
 import org.jmailing.ui.common.panel.CsvFilePanel;
 import org.jmailing.ui.common.panel.FilePanel;
 import org.jmailing.ui.common.panel.PdfFilePanel;
@@ -70,6 +80,8 @@ public class JMailingModule extends AbstractModule {
 				MailingConfigurationPartImpl.class);
 
 		bind(Data.class).toProvider(DataProvider.class);
+		bind(EMail.class).toProvider(EMailProvider.class);
+		bind(Attachment.class).toProvider(AttachmentProvider.class);
 
 		// Service
 		bind(SmtpIO.class).to(SmtpIOImpl.class);
@@ -77,6 +89,8 @@ public class JMailingModule extends AbstractModule {
 		bind(MailingProjectRetriever.class).to(
 				MailingProjectRetrieverImpl.class);
 		bind(ProjectNameList.class).to(ProjectNameListImpl.class);
+		bind(AttachmentSplitter.class).to(PdfAttachmentSplitterImpl.class);
+		bind(MailingGenerator.class).to(MailingGeneratorImpl.class);
 		bind(EmailService.class).to(EmailServiceImpl.class);
 		bind(DataFileReader.class).to(CsvFileReader.class);
 
@@ -103,6 +117,10 @@ public class JMailingModule extends AbstractModule {
 				projectPath);
 		bind(String.class).annotatedWith(Extension.class).toInstance(
 				Constants.EXTENSION);
+		bind(String.class).annotatedWith(VariablePrefix.class).toInstance(
+				Constants.VARIABLE_PREFIX);
+		bind(String.class).annotatedWith(VariableSuffix.class).toInstance(
+				Constants.VARIABLE_SUFFIX);
 
 	}
 

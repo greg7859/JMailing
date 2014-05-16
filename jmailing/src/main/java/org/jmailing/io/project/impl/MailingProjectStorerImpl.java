@@ -72,15 +72,17 @@ public class MailingProjectStorerImpl implements MailingProjectStorer {
 	private void saveSource() throws IOException {
 		// Create the file
 		FileOutputStream fos = new FileOutputStream(getProjectFolder()
-				+ File.separator + MailingProjectIOConstants.SOURCE_FILENAME + extension);
+				+ File.separator + MailingProjectIOConstants.SOURCE_FILENAME
+				+ extension);
 		Properties prop = new Properties();
 		SourceVariable[] sourceVariables = project
 				.getSourceMailingProjectPart().getSourceVariables();
 		int counter = 0;
 		for (SourceVariable sourceVariable : sourceVariables) {
-			prop.setProperty(MailingProjectIOConstants.SOURCE_NAME+"." + counter, sourceVariable.getName());
-			prop.setProperty(MailingProjectIOConstants.SOURCE_INDEX+"." + counter,
-					Integer.toString(sourceVariable.getIndex()));
+			prop.setProperty(MailingProjectIOConstants.SOURCE_NAME + "."
+					+ counter, sourceVariable.getName());
+			prop.setProperty(MailingProjectIOConstants.SOURCE_INDEX + "."
+					+ counter, Integer.toString(sourceVariable.getIndex()));
 			counter++;
 		}
 		prop.store(fos, " Source Mailing Project");
@@ -90,11 +92,13 @@ public class MailingProjectStorerImpl implements MailingProjectStorer {
 	private void saveAttachment() throws IOException {
 		// Create the file
 		FileOutputStream fos = new FileOutputStream(getProjectFolder()
-				+ File.separator + MailingProjectIOConstants.ATTACHMENT_FILENAME + extension);
+				+ File.separator
+				+ MailingProjectIOConstants.ATTACHMENT_FILENAME + extension);
 		Properties prop = new Properties();
 		AttachmentMailingProjectPart attachment = project
 				.getAttachmentMailingProjectPart();
-		prop.setProperty(MailingProjectIOConstants.ATTACHMENT_FORMAT, attachment.getFilenameFormat());
+		prop.setProperty(MailingProjectIOConstants.ATTACHMENT_FORMAT,
+				attachment.getFilenameFormat());
 		prop.setProperty(MailingProjectIOConstants.ATTACHMENT_NUMBER,
 				Integer.toString(attachment.getNumberOfPageOfSplit()));
 
@@ -107,20 +111,29 @@ public class MailingProjectStorerImpl implements MailingProjectStorer {
 		try {
 			// Create the file
 			FileOutputStream fos = new FileOutputStream(getProjectFolder()
-					+ File.separator + MailingProjectIOConstants.EMAIL_FILENAME + extension);
+					+ File.separator + MailingProjectIOConstants.EMAIL_FILENAME
+					+ extension);
 			Properties prop = new Properties();
 			EmailMailingProjectPart email = project
 					.getEMailMailingProjectPart();
-			prop.setProperty(MailingProjectIOConstants.EMAIL_TO, email.getTo());
-			prop.setProperty(MailingProjectIOConstants.EMAIL_CC, email.getCc());
-			prop.setProperty(MailingProjectIOConstants.EMAIL_TITLE, email.getTitle());
+			String tmp = email.getTo();
+			prop.setProperty(MailingProjectIOConstants.EMAIL_TO,
+					tmp != null ? tmp : "");
+			tmp = email.getCc();
+			prop.setProperty(MailingProjectIOConstants.EMAIL_CC,
+					tmp != null ? tmp : "");
+			tmp = email.getTitle();
+			prop.setProperty(MailingProjectIOConstants.EMAIL_TITLE,
+					tmp != null ? tmp : "");
 
 			prop.store(fos, " EMail Mailing Project");
 			fos.close();
 
 			writer = new BufferedWriter(new FileWriter(getProjectFolder()
-					+ File.separator + MailingProjectIOConstants.EMAIL_BODY + extension));
-			writer.write(email.getBody());
+					+ File.separator + MailingProjectIOConstants.EMAIL_BODY
+					+ extension));
+			tmp = email.getBody();
+			writer.write(tmp != null ? tmp : "");
 		} finally {
 			if (writer != null)
 				writer.close();
@@ -130,7 +143,8 @@ public class MailingProjectStorerImpl implements MailingProjectStorer {
 	private void saveMailing() throws IOException {
 		// Create the file
 		FileOutputStream fos = new FileOutputStream(getProjectFolder()
-				+ File.separator + MailingProjectIOConstants.MAILING_FILENAME + extension);
+				+ File.separator + MailingProjectIOConstants.MAILING_FILENAME
+				+ extension);
 		Properties prop = new Properties();
 		MailingConfigurationPart mailing = project
 				.getMailingConfigurationPart();

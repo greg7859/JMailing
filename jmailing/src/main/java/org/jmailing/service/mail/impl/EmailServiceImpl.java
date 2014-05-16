@@ -3,15 +3,21 @@ package org.jmailing.service.mail.impl;
 import javax.inject.Inject;
 
 import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.jmailing.injector.provider.EMailProvider;
+import org.jmailing.model.email.Attachment;
+import org.jmailing.model.email.EMail;
 import org.jmailing.model.smtp.Smtp;
 import org.jmailing.service.mail.EmailService;
 import org.jmailing.service.mail.EmailServiceException;
 
 public class EmailServiceImpl implements EmailService {
 
-	Smtp smtp = null;
+	private Smtp smtp = null;
+	@Inject
+	private EMailProvider emailProvider;
 
 	@Inject
 	@Override
@@ -22,34 +28,64 @@ public class EmailServiceImpl implements EmailService {
 	@Override
 	public void sendHtmlMessage(String[] to, String subject, String body)
 			throws EmailServiceException {
+		// Create the email
+		EMail email = emailProvider.get();
+		for (String address : to) {
+			email.addTo(address);
+		}
+		email.setSubject(subject);
+		email.setBody(body);
+
+		// send it
+		sendHtmlMessage(email);
+	}
+
+	@Override
+	public void sendHtmlMessage(EMail email) throws EmailServiceException {
 		try {
 			// create the email message
-			HtmlEmail email = new HtmlEmail();
-			email.setHostName(smtp.getHost());
-			email.setSmtpPort(Integer.parseInt(smtp.getPort()));
-			email.setFrom(smtp.getFromAddress(), smtp.getFromLabel());
+			HtmlEmail htmlEmail = new HtmlEmail();
+			htmlEmail.setHostName(smtp.getHost());
+			htmlEmail.setSmtpPort(Integer.parseInt(smtp.getPort()));
+			htmlEmail.setFrom(smtp.getFromAddress(), smtp.getFromLabel());
 
 			if (smtp.getAuthentication()) {
-				email.setAuthenticator(new DefaultAuthenticator(
-						smtp.getLogin(), smtp.getPassword()));
+				htmlEmail.setAuthenticator(new DefaultAuthenticator(smtp
+						.getLogin(), smtp.getPassword()));
 
 			}
-			email.setSSLOnConnect(smtp.getSSL());
-			for (String address : to) {
-				email.addTo(address);
+			htmlEmail.setSSLOnConnect(smtp.getSSL());
+			for (String address : email.getTo()) {
+				htmlEmail.addTo(address);
 			}
-			email.setSubject(subject);
+			for (String address : email.getCc()) {
+				htmlEmail.addCc(address);
+			}
+			htmlEmail.setSubject(email.getSubject());
 
 			// set the html message
-			email.setHtmlMsg(body);
+			htmlEmail.setHtmlMsg(email.getBody());
 
 			// set the alternative message
-			email.setTextMsg("Your email client does not support HTML messages");
+			htmlEmail
+					.setTextMsg("Your email client does not support HTML messages");
+
+			for (Attachment attachment : email.getAttachments()) {
+				// Create the attachment
+				EmailAttachment emailAttachment = new EmailAttachment();
+				emailAttachment.setPath(attachment.getPath());
+				emailAttachment.setDisposition(EmailAttachment.ATTACHMENT);
+				emailAttachment.setDescription("");
+				emailAttachment.setName(attachment.getName());
+
+				htmlEmail.attach(emailAttachment);
+			}
 
 			// send the email
-			email.send();
+			htmlEmail.send();
 		} catch (EmailException e) {
 			throw new EmailServiceException(e.getMessage());
 		}
+
 	}
 }

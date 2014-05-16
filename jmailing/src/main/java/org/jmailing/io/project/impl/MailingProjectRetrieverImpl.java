@@ -64,6 +64,8 @@ public class MailingProjectRetrieverImpl implements MailingProjectRetriever {
 		Properties prop = new Properties();
 		prop.load(fis);
 		fis.close();
+		
+		project.setName(this.nameProject);
 	}
 
 	private void loadSource() throws IOException {
