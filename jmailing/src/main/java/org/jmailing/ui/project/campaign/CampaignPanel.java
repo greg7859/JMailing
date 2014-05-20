@@ -111,6 +111,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener, MailingG
 		gbc_Table.gridx = 0;
 		gbc_Table.gridy = 3;
 		add(cTablePanel, gbc_Table);
+		cTablePanel.setVisible(false);
 	}
 
 	@Override
@@ -120,6 +121,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener, MailingG
 			try {
 				csvData = reader.readAll(selectedFile);
 				cTablePanel.setData(csvData);
+				cTablePanel.setVisible(true);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

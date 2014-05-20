@@ -36,7 +36,7 @@ public class CampaignTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return variables.size();
+		return variables.size() + 1;
 	}
 
 	@Override
@@ -51,9 +51,11 @@ public class CampaignTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(final int rowIndex, final int colIndex) {
 		String s = "";
-		if (colIndex < variables.size()) {
+		if (colIndex == 0)
+			return rowIndex+1;
+		else if (colIndex < variables.size() + 1) {
 			if (data != null) {
-				s = data.get(rowIndex).get(variables.get(colIndex).getIndex());
+				s = data.get(rowIndex).get(variables.get(colIndex-1).getIndex());
 			}
 		} else {
 			final JButton button = new JButton("See email");
@@ -71,10 +73,11 @@ public class CampaignTableModel extends AbstractTableModel {
 
 	@Override
 	public String getColumnName(int columnIndex) {
-		if (columnIndex < variables.size()) {
-	return this.variables.get(columnIndex).getName();
-		}
-		else {
+		if (columnIndex == 0)
+			return "";
+		else if (columnIndex < variables.size() + 1) {
+			return this.variables.get(columnIndex-1).getName();
+		} else {
 			return "Action";
 		}
 	}
