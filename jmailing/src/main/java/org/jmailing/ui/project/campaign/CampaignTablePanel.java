@@ -1,17 +1,13 @@
 package org.jmailing.ui.project.campaign;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Insets;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 
 import org.jmailing.model.source.Data;
 import org.jmailing.ui.layout.TableUtilities;
@@ -45,12 +41,12 @@ public class CampaignTablePanel extends JPanel {
 				false);
 	}
 	
-	private static class JTableButtonRenderer implements TableCellRenderer {        
-        @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            JButton button = (JButton)value;
-            return button;  
-        }
-    }
+//	private static class JTableButtonRenderer implements TableCellRenderer {        
+//        @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//            JButton button = (JButton)value;
+//            return button;  
+//        }
+//    }
 	
 //	private static class JTableButtonMouseListener extends MouseAdapter {
 //        private final JTable table;
