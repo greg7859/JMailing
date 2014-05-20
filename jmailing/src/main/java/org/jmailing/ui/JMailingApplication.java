@@ -5,9 +5,11 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -26,8 +28,6 @@ import org.jmailing.io.project.MailingProjectStorer;
 import org.jmailing.io.project.ProjectNameList;
 import org.jmailing.io.smtp.SmtpIO;
 import org.jmailing.model.project.MailingProject;
-import org.jmailing.model.smtp.Smtp;
-import org.jmailing.service.mail.EmailService;
 import org.jmailing.ui.about.AboutDialog;
 import org.jmailing.ui.project.MailingProjectPanel;
 import org.jmailing.ui.smtp.SmtpDialog;
@@ -93,6 +93,13 @@ public class JMailingApplication {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("JMailing");
+		
+		try {
+			BufferedImage bufImg = ImageIO.read( ClassLoader.getSystemResource( "icons/app/mail.png" ) );
+			frame.setIconImage(bufImg);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -215,14 +222,6 @@ public class JMailingApplication {
 			}
 		});
 		helpMenu.add(aboutMenuItem);
-
-		// Notifier notifieur = new Notifier(
-		// "Bienvenu",
-		// "Merci d'utiliser JMailing pour vos envoi de mailing avec attachement PDF.",
-		// NotificationType.INFO
-		// );
-		// notifieur.start();
-
 	}
 
 	private void save(String name) {
