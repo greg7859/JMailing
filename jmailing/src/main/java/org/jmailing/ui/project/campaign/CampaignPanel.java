@@ -23,7 +23,8 @@ import org.jmailing.service.mailing.MailingGeneratorListener;
 import org.jmailing.ui.common.panel.FilePanel;
 import org.jmailing.ui.common.panel.FilePanelListener;
 
-public class CampaignPanel extends JPanel implements FilePanelListener, MailingGeneratorListener {
+public class CampaignPanel extends JPanel implements FilePanelListener,
+		MailingGeneratorListener {
 	@Inject
 	private DataFileReader reader;
 
@@ -59,7 +60,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener, MailingG
 	@Inject
 	public void initPanel() {
 		mailingGenerator.addListener(this);
-		
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0 };
 		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0 };
@@ -122,6 +123,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener, MailingG
 				csvData = reader.readAll(selectedFile);
 				cTablePanel.setData(csvData);
 				cTablePanel.setVisible(true);
+				checkConsistencyData();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -142,14 +144,27 @@ public class CampaignPanel extends JPanel implements FilePanelListener, MailingG
 
 	@Override
 	public void progress(int index, int progress, boolean state) {
-		System.out.println("Progress=" + progress + " %. Send " + (index+1) + " on " + csvData.size());
+		System.out.println("Progress=" + progress + " %. Send " + (index + 1)
+				+ " on " + csvData.size());
 	}
-	
+
 	private void changeStateButton(boolean b) {
 		sendBtn.setEnabled(b);
 		csvFilePanel.setEnabled(b);
 		pdfFilePanel.setEnabled(b);
-		
+	}
+
+	private void checkConsistencyData() {
+		int size = -1;
+		for (Data data : csvData) {
+			if (size == -1)
+				size = data.size();
+			else if (size != data.size()) {
+				JOptionPane.showMessageDialog(this, "Some data are uncomplete",
+						"Quality control", JOptionPane.WARNING_MESSAGE);
+				break;
+			}
+		}
 	}
 
 }
