@@ -28,6 +28,7 @@ public class FilePanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -2797488467729326156L;
 	private JTextField filenameTxt;
+	private JButton selectBtn;
 
 	/**
 	 * Create the panel.
@@ -45,7 +46,7 @@ public class FilePanel extends JPanel {
 		add(filenameTxt);
 		filenameTxt.setColumns(255);
 
-		JButton selectBtn = new JButton("Select...");
+		selectBtn = new JButton("Select...");
 		selectBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -68,6 +69,10 @@ public class FilePanel extends JPanel {
 		selectBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(selectBtn);
 
+	}
+	
+	public void setEnabled(boolean b) {
+		selectBtn.setEnabled(b);
 	}
 
 	public void addListener(FilePanelListener listener) {
