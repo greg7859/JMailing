@@ -10,21 +10,20 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.commons.lang.StringUtils;
 import org.jmailing.injector.annotation.Csv;
 import org.jmailing.injector.annotation.Pdf;
 import org.jmailing.io.csv.DataFileReader;
-import org.jmailing.model.email.EMail;
 import org.jmailing.model.source.Data;
-import org.jmailing.service.mailing.AttachmentSplitter;
-import org.jmailing.service.mailing.AttachmentSplitterException;
 import org.jmailing.service.mailing.MailingGenerator;
+import org.jmailing.service.mailing.MailingGeneratorListener;
 import org.jmailing.ui.common.panel.FilePanel;
 import org.jmailing.ui.common.panel.FilePanelListener;
 
-public class CampaignPanel extends JPanel implements FilePanelListener {
+public class CampaignPanel extends JPanel implements FilePanelListener, MailingGeneratorListener {
 	@Inject
 	private DataFileReader reader;
 
@@ -59,6 +58,8 @@ public class CampaignPanel extends JPanel implements FilePanelListener {
 
 	@Inject
 	public void initPanel() {
+		mailingGenerator.addListener(this);
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0 };
 		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0 };
@@ -97,6 +98,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				changeStateButton(false);
 				mailingGenerator.sendCampaign(csvData, pdfFile);
 			}
 		});
@@ -128,6 +130,24 @@ public class CampaignPanel extends JPanel implements FilePanelListener {
 		if (StringUtils.isNotBlank(cvsFile) && StringUtils.isNotBlank(pdfFile)) {
 			sendBtn.setEnabled(true);
 		}
+	}
+
+	@Override
+	public void done() {
+		changeStateButton(true);
+		JOptionPane.showMessageDialog(this, "Campaign done !");
+	}
+
+	@Override
+	public void progress(int index, int progress, boolean state) {
+		System.out.println("Progress=" + progress + " %. Send " + (index+1) + " on " + csvData.size());
+	}
+	
+	private void changeStateButton(boolean b) {
+		sendBtn.setEnabled(b);
+		csvFilePanel.setEnabled(b);
+		pdfFilePanel.setEnabled(b);
+		
 	}
 
 }

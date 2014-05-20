@@ -3,10 +3,12 @@ package org.jmailing.service.mailing.impl;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.swing.SwingWorker;
 
 import org.jmailing.config.ConfigHelper;
 import org.jmailing.injector.annotation.ProjectPath;
@@ -25,11 +27,16 @@ import org.jmailing.service.mail.EmailServiceException;
 import org.jmailing.service.mailing.AttachmentSplitter;
 import org.jmailing.service.mailing.AttachmentSplitterException;
 import org.jmailing.service.mailing.MailingGenerator;
+import org.jmailing.service.mailing.MailingGeneratorEvent;
+import org.jmailing.service.mailing.MailingGeneratorListener;
 
 import com.google.common.base.Splitter;
 
 public class MailingGeneratorImpl implements MailingGenerator {
 	final static String SPLITTED_FILENAME = "PDF-";
+
+	List<MailingGeneratorListener> listeners = new ArrayList<>();
+
 	@Inject
 	@VariablePrefix
 	private String prefix;
@@ -58,49 +65,89 @@ public class MailingGeneratorImpl implements MailingGenerator {
 	private EmailService emailSvc;
 
 	@Override
-	public void sendCampaign(List<Data> data, String filename) {
-		int nbPage = project.getAttachmentMailingProjectPart()
-				.getNumberOfPageOfSplit();
-		try {
-			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat dateFormat = new SimpleDateFormat(
-					"yyyy-MM-dd-HH-mm-ss");
-			String dateStr = dateFormat.format(cal.getTime());
-			String pathProject = path + File.separator + project.getName()
-					+ File.separator + dateStr;
-			ConfigHelper.checkDirectory(pathProject);
-			attSplitter.split(filename, pathProject, SPLITTED_FILENAME, nbPage);
-			int index = 0;
-			String format = project.getAttachmentMailingProjectPart()
-					.getFilenameFormat();
-			int sleepTime = 3600000 / project.getMailingConfigurationPart()
-					.getNumberMailPerHour();
-			for (Data itemData : data) {
-				EMail email = generateEMail(itemData);
-				Attachment attachment = generateAttachment(index, itemData,
-						format, pathProject);
-				email.addAttachment(attachment);
-				emailSvc.sendHtmlMessage(email);
-				Thread.sleep(sleepTime);
-				index++;
-			}
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (AttachmentSplitterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EmailServiceException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void sendCampaign(final List<Data> data, final String filename) {
+		SwingWorker<Integer, MailingGeneratorEvent> worker = new SwingWorker<Integer, MailingGeneratorEvent>() {
 
+			@Override
+			protected Integer doInBackground() throws Exception {
+				int nbPage = project.getAttachmentMailingProjectPart()
+						.getNumberOfPageOfSplit();
+				try {
+					Calendar cal = Calendar.getInstance();
+					SimpleDateFormat dateFormat = new SimpleDateFormat(
+							"yyyy-MM-dd-HH-mm-ss");
+					String dateStr = dateFormat.format(cal.getTime());
+					String pathProject = path + File.separator
+							+ project.getName() + File.separator + dateStr;
+					ConfigHelper.checkDirectory(pathProject);
+					attSplitter.split(filename, pathProject, SPLITTED_FILENAME,
+							nbPage);
+					int index = 0;
+					String format = project.getAttachmentMailingProjectPart()
+							.getFilenameFormat();
+					int sleepTime = 3600000 / project
+							.getMailingConfigurationPart()
+							.getNumberMailPerHour();
+
+					/* Transmet la nouvelle progression. */
+					int progress = 20;
+					publish(new MailingGeneratorEvent(EVENT_SPLIT, progress, 0));
+
+					int step = 80 / data.size();
+
+					for (Data itemData : data) {
+						EMail email = generateEMail(itemData);
+						Attachment attachment = generateAttachment(index,
+								itemData, format, pathProject);
+						email.addAttachment(attachment);
+						try {
+							progress += step;
+							emailSvc.sendHtmlMessage(email);
+							publish(new MailingGeneratorEvent(EVENT_EMAIL_SENT,
+									progress, index));
+
+						} catch (EmailServiceException e1) {
+							publish(new MailingGeneratorEvent(
+									EVENT_EMAIL_UNSENT, progress, index));
+						}
+						Thread.sleep(sleepTime);
+						index++;
+					}
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (AttachmentSplitterException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				return new Integer(1);
+			}
+
+			@Override
+			public void process(List<MailingGeneratorEvent> list) {
+				for (MailingGeneratorEvent event : list)
+					for (MailingGeneratorListener listener : listeners) {
+						if (event.getEventType() == EVENT_SPLIT
+								|| event.getEventType() == EVENT_EMAIL_SENT)
+							listener.progress(event.getIndex(),
+									event.getProgress(), true);
+						else if (event.getEventType() == EVENT_EMAIL_UNSENT)
+							listener.progress(event.getIndex(),
+									event.getProgress(), false);
+						else if (event.getEventType() == EVENT_DONE)
+							listener.done();
+					}
+			}
+
+			@Override
+			public void done() {
+				publish(new MailingGeneratorEvent(EVENT_DONE, 100, -1));
+			}
+
+		};
+		worker.execute();
 	}
 
 	@Override
@@ -170,6 +217,16 @@ public class MailingGeneratorImpl implements MailingGenerator {
 		}
 
 		return result;
+	}
+
+	@Override
+	public void addListener(MailingGeneratorListener listener) {
+		listeners.add(listener);
+	}
+
+	@Override
+	public void reomoveAllListener() {
+		listeners.clear();
 	}
 
 }
