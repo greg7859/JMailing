@@ -16,11 +16,13 @@ public class SmtpIOTest {
 	public void ioTest() {
 
 		String login = "cochon";
-		String password = "motDePasse#4_";
-		String host = "maMAchine";
+		String password = "APassW0Rd#4Me";
+		String host = "MyHost";
 		String port = "25";
 		String email = "noreply@example.org";
-		String label = "No Repley";
+		String label = "No Reply";
+		boolean ssl = false;
+		boolean auth = true;
 
 		Injector injector = Guice.createInjector(new JMailingModule());
 
@@ -31,19 +33,27 @@ public class SmtpIOTest {
 		smtp.setPort(port);
 		smtp.setFromAddress(email);
 		smtp.setFromLabel(label);
+		smtp.setSSL(ssl);
+		smtp.setAuthentication(auth);
 
-		
 		Smtp loadedSmtp = null;
 		try {
 			SmtpIO io = injector.getInstance(SmtpIO.class);
 			io.save();
 
-			 loadedSmtp = io.load();
+			loadedSmtp = io.load();
 
 		} catch (IOException e) {
 
 		}
 		Assert.assertEquals(login, loadedSmtp.getLogin());
+		Assert.assertEquals(password, loadedSmtp.getPassword());
+		Assert.assertEquals(host, loadedSmtp.getHost());
+		Assert.assertEquals(port, loadedSmtp.getPort());
+		Assert.assertEquals(email, loadedSmtp.getFromAddress());
+		Assert.assertEquals(label, loadedSmtp.getFromLabel());
+		Assert.assertEquals(ssl, loadedSmtp.getSSL());
+		Assert.assertEquals(auth, loadedSmtp.getAuthentication());
 	}
 
 }
