@@ -18,9 +18,6 @@ import org.jmailing.config.ConfigHelper;
 
 public class FilePanel extends JPanel {
 	
-	protected String desc = null;
-	protected String extension = null;
-
 	ArrayList<FilePanelListener> listeners = new ArrayList<>();
 
 	/**
@@ -33,10 +30,10 @@ public class FilePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public FilePanel() {
+	public FilePanel(String label, final String desc, final String extension) {
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-		JLabel lblFile = new JLabel("File:");
+		JLabel lblFile = new JLabel(label);
 		lblFile.setVerticalAlignment(SwingConstants.TOP);
 		lblFile.setHorizontalAlignment(SwingConstants.LEFT);
 		add(lblFile);
