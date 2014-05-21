@@ -92,8 +92,8 @@ public class MailingGeneratorImpl implements MailingGenerator {
 					/* Transmet la nouvelle progression. */
 					int progress = 20;
 					publish(new MailingGeneratorEvent(EVENT_SPLIT, progress, 0));
-
-					int step = 80 / data.size();
+					int size = data.size();
+					int step = 80 / size;
 
 					for (Data itemData : data) {
 						EMail email = generateEMail(itemData);
@@ -110,8 +110,9 @@ public class MailingGeneratorImpl implements MailingGenerator {
 							publish(new MailingGeneratorEvent(
 									EVENT_EMAIL_UNSENT, progress, index));
 						}
-						Thread.sleep(sleepTime);
 						index++;
+						if (index != size)
+							Thread.sleep(sleepTime);
 					}
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
