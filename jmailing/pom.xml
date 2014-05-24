@@ -64,18 +64,14 @@
 			<version>15.0</version>
 		</dependency>
 
+		<!-- Apache Commons Lang -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
 
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-		</dependency>
-
+		<!-- Mig Layout for Swing -->
 		<dependency>
 			<groupId>com.miglayout</groupId>
 			<artifactId>miglayout</artifactId>
