@@ -9,6 +9,8 @@ import org.jmailing.injector.annotation.Campaign;
 import org.jmailing.injector.annotation.Csv;
 import org.jmailing.injector.annotation.Email;
 import org.jmailing.injector.annotation.Extension;
+import org.jmailing.injector.annotation.Html;
+import org.jmailing.injector.annotation.Log;
 import org.jmailing.injector.annotation.Mailing;
 import org.jmailing.injector.annotation.Pdf;
 import org.jmailing.injector.annotation.ProjectPath;
@@ -45,6 +47,8 @@ import org.jmailing.model.project.impl.SourceMailingProjectPartImpl;
 import org.jmailing.model.smtp.Smtp;
 import org.jmailing.model.smtp.impl.SmtpImpl;
 import org.jmailing.model.source.Data;
+import org.jmailing.service.logger.FileLogger;
+import org.jmailing.service.logger.impl.FileLoggerImpl;
 import org.jmailing.service.mail.EmailService;
 import org.jmailing.service.mail.impl.EmailServiceImpl;
 import org.jmailing.service.mailing.AttachmentSplitter;
@@ -93,6 +97,7 @@ public class JMailingModule extends AbstractModule {
 		bind(MailingGenerator.class).to(MailingGeneratorImpl.class);
 		bind(EmailService.class).to(EmailServiceImpl.class);
 		bind(DataFileReader.class).to(CsvFileReader.class);
+		bind(FileLogger.class).to(FileLoggerImpl.class);
 
 		// Security
 		bind(StringEncryptor.class).to(StringEncryptorImpl.class);
@@ -121,6 +126,12 @@ public class JMailingModule extends AbstractModule {
 				Constants.VARIABLE_PREFIX);
 		bind(String.class).annotatedWith(VariableSuffix.class).toInstance(
 				Constants.VARIABLE_SUFFIX);
+		bind(String.class).annotatedWith(Log.class).toInstance(
+				Constants.LOG_EXTENSION);
+		bind(String.class).annotatedWith(Html.class).toInstance(
+				Constants.HTML_EXTENSION);
+		bind(String.class).annotatedWith(Pdf.class).toInstance(
+				Constants.PDF_EXTENSION);
 
 	}
 

@@ -8,4 +8,7 @@ public interface Constants {
 	static public final String EXTENSION = ".jmailing";
 	static public final String VARIABLE_PREFIX = "${";
 	static public final String VARIABLE_SUFFIX = "}";
+	static public final String PDF_EXTENSION=".pdf";
+	static public final String LOG_EXTENSION=".log";
+	static public final String HTML_EXTENSION=".html";
 }
