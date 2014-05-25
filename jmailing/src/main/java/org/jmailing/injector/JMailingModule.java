@@ -23,6 +23,8 @@ import org.jmailing.injector.provider.EMailProvider;
 import org.jmailing.io.adapter.impl.StringEncryptorImpl;
 import org.jmailing.io.csv.CsvFileReader;
 import org.jmailing.io.csv.DataFileReader;
+import org.jmailing.io.email.EMailIO;
+import org.jmailing.io.email.impl.EMailIOImpl;
 import org.jmailing.io.project.MailingProjectRetriever;
 import org.jmailing.io.project.MailingProjectStorer;
 import org.jmailing.io.project.ProjectNameList;
@@ -87,16 +89,21 @@ public class JMailingModule extends AbstractModule {
 		bind(EMail.class).toProvider(EMailProvider.class);
 		bind(Attachment.class).toProvider(AttachmentProvider.class);
 
-		// Service
+		// IO
 		bind(SmtpIO.class).to(SmtpIOImpl.class);
+		bind(EMailIO.class).to(EMailIOImpl.class);
+		bind(DataFileReader.class).to(CsvFileReader.class);
 		bind(MailingProjectStorer.class).to(MailingProjectStorerImpl.class);
 		bind(MailingProjectRetriever.class).to(
 				MailingProjectRetrieverImpl.class);
+		
+		// Service
 		bind(ProjectNameList.class).to(ProjectNameListImpl.class);
 		bind(AttachmentSplitter.class).to(PdfAttachmentSplitterImpl.class);
 		bind(MailingGenerator.class).to(MailingGeneratorImpl.class);
 		bind(EmailService.class).to(EmailServiceImpl.class);
-		bind(DataFileReader.class).to(CsvFileReader.class);
+		
+		// Custom logger
 		bind(FileLogger.class).to(FileLoggerImpl.class);
 
 		// Security
