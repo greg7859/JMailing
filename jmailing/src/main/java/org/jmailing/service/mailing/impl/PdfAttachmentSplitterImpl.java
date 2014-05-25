@@ -3,12 +3,16 @@
  */
 package org.jmailing.service.mailing.impl;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import org.jmailing.injector.annotation.Pdf;
 import org.jmailing.service.mailing.AttachmentSplitter;
 import org.jmailing.service.mailing.AttachmentSplitterException;
+import org.jmailing.utilities.FileNameUtilities;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -20,7 +24,15 @@ import com.lowagie.text.pdf.PdfReader;
  * @author gregory
  * 
  */
+@Singleton
 public class PdfAttachmentSplitterImpl implements AttachmentSplitter {
+
+	@Inject
+	@Pdf
+	private String pdfExtension;
+
+	@Inject
+	private FileNameUtilities filenameUtilities;
 
 	@Override
 	public void split(String filename, String outputPath, String splitPrefix,
@@ -38,8 +50,8 @@ public class PdfAttachmentSplitterImpl implements AttachmentSplitter {
 
 		int i = 0;
 		while (i < n) {
-			String outFile = outputPath + File.separator + splitPrefix
-					+ String.format("%03d", (i / nbPage) + 1) + ".pdf";
+			String outFile = filenameUtilities.build(outputPath, splitPrefix,
+					(i / nbPage) + 1, pdfExtension);
 			PdfCopy writer;
 			try {
 				Document document = new Document(
