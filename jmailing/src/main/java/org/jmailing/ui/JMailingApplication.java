@@ -121,7 +121,7 @@ public class JMailingApplication {
 		});
 		fileMenu.add(newMenuItem);
 		// Load
-		JMenuItem loadMenuItem = new JMenuItem("Load project");
+		JMenuItem loadMenuItem = new JMenuItem("Open project");
 		loadMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
