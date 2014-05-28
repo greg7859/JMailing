@@ -243,8 +243,10 @@ public class MailingGeneratorImpl implements MailingGenerator {
 		String result = template;
 
 		for (SourceVariable sourceVariable : variables) {
-			result = result.replace(prefix + sourceVariable.getName() + suffix,
-					data.get(sourceVariable.getIndex()));
+			if (sourceVariable.getIndex() != SourceVariable.NO_INDEX) {
+				result = result.replace(prefix + sourceVariable.getName()
+						+ suffix, data.get(sourceVariable.getIndex()));
+			}
 		}
 
 		return result;
