@@ -93,9 +93,9 @@ public class JMailingApplication {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("JMailing");
-		
 		try {
-			BufferedImage bufImg = ImageIO.read( ClassLoader.getSystemResource( "icons/app/mail.png" ) );
+			BufferedImage bufImg = ImageIO.read(ClassLoader
+					.getSystemResource("icons/app/mail.png"));
 			frame.setIconImage(bufImg);
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -112,11 +112,17 @@ public class JMailingApplication {
 		newMenuItem.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
+				MailingProject project = injector
+						.getInstance(MailingProject.class);
+				injector.injectMembers(project);
+				project.setName(null);
+
 				MailingProjectPanel panel = injector
 						.getInstance(MailingProjectPanel.class);
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(panel);
 				frame.setVisible(true);
+				updateTitleBar();
 			}
 		});
 		fileMenu.add(newMenuItem);
@@ -146,6 +152,7 @@ public class JMailingApplication {
 						frame.getContentPane().removeAll();
 						frame.getContentPane().add(panel);
 						frame.setVisible(true);
+						updateTitleBar();
 
 					} catch (IOException e) {
 						JOptionPane.showMessageDialog(frame,
@@ -238,11 +245,21 @@ public class JMailingApplication {
 						.getInstance(MailingProject.class);
 				project.setName(name);
 				storer.save(name);
+				updateTitleBar();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(frame, "Error during the save",
 						"Error", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void updateTitleBar() {
+		MailingProject project = injector.getInstance(MailingProject.class);
+		StringBuffer buf = new StringBuffer("JMailing");
+		if (StringUtils.isNotBlank(project.getName())) {
+			buf.append("  [").append(project.getName()).append("]");
+		}
+		frame.setTitle(buf.toString());
 	}
 }
