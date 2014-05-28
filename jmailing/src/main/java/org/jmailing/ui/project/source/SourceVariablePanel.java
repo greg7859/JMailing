@@ -106,6 +106,8 @@ public class SourceVariablePanel extends JPanel {
 				String txt = StringUtils.normalizeSpace(tf.getText());
 				if (!StringUtils.isBlank(txt)) {
 					newValue = Integer.parseInt(txt)-1;
+					if (newValue<-1)
+						newValue=SourceVariable.NO_INDEX;
 				}
 				if (oldValue != newValue) {
 					v.setIndex(newValue);
