@@ -15,6 +15,7 @@ public class EmailMailingProjectPartImpl implements EmailMailingProjectPart {
 
 	private String to;
 	private String cc;
+	private String bcc;
 	private String title;
 	private String body;
 
@@ -36,6 +37,16 @@ public class EmailMailingProjectPartImpl implements EmailMailingProjectPart {
 	@Override
 	public void setCc(String cc) {
 		this.cc = cc;
+	}
+	
+	@Override
+	public String getBcc() {
+		return bcc;
+	}
+
+	@Override
+	public void setBcc(String bcc) {
+		this.bcc = bcc;
 	}
 
 	/**

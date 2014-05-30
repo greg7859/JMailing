@@ -12,6 +12,7 @@ public class EMailImpl implements EMail {
 
 	private List<String> tos = null;
 	private List<String> ccs = null;
+	private List<String> bccs = null;
 	private String subject = null;
 	private String body = null;
 	private List<Attachment> attachments = null;
@@ -19,6 +20,7 @@ public class EMailImpl implements EMail {
 	public EMailImpl() {
 		tos = new ArrayList<>();
 		ccs = new ArrayList<>();
+		bccs = new ArrayList<>();
 		attachments = new ArrayList<>();
 	}
 
@@ -35,6 +37,16 @@ public class EMailImpl implements EMail {
 	@Override
 	public String[] getCc() {
 		return Iterables.toArray(ccs, String.class);
+	}
+
+	@Override
+	public void addBcc(String bcc) {
+		bccs.add(bcc);
+	}
+	
+	@Override
+	public String[] getBcc() {
+		return Iterables.toArray(bccs, String.class);
 	}
 
 	@Override

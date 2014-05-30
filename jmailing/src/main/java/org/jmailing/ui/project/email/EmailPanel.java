@@ -28,6 +28,7 @@ public class EmailPanel extends JPanel {
 	private JTextField textField;
 	private JTextField toField;
 	private JTextField ccField;
+	private JTextField bccField;
 
 	public EmailPanel() {
 	}
@@ -38,9 +39,9 @@ public class EmailPanel extends JPanel {
 				.getEMailMailingProjectPart();
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0,
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0,
 				Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 
@@ -62,7 +63,8 @@ public class EmailPanel extends JPanel {
 		add(toField, gbc_toField);
 		toField.setColumns(10);
 		toField.setText(emailPart.getTo());
-		TextComponentListener toTal = new TextComponentListener(emailPart, FieldType.TO);
+		TextComponentListener toTal = new TextComponentListener(emailPart,
+				FieldType.TO);
 		toField.addActionListener(toTal);
 		toField.addFocusListener(toTal);
 
@@ -84,16 +86,40 @@ public class EmailPanel extends JPanel {
 		add(ccField, gbc_ccField);
 		ccField.setColumns(10);
 		ccField.setText(emailPart.getCc());
-		TextComponentListener ccTal = new TextComponentListener(emailPart, FieldType.CC);
+		TextComponentListener ccTal = new TextComponentListener(emailPart,
+				FieldType.CC);
 		ccField.addActionListener(ccTal);
 		ccField.addFocusListener(ccTal);
+
+		JLabel lblBCC = new JLabel("BCC");
+		GridBagConstraints gbc_lblBCC = new GridBagConstraints();
+		gbc_lblBCC.anchor = GridBagConstraints.EAST;
+		gbc_lblBCC.insets = new Insets(0, 0, 5, 5);
+		gbc_lblBCC.gridx = 0;
+		gbc_lblBCC.gridy = 2;
+		add(lblBCC, gbc_lblBCC);
+
+		bccField = new JTextField();
+		GridBagConstraints gbc_bccField = new GridBagConstraints();
+		gbc_bccField.insets = new Insets(0, 0, 5, 5);
+		gbc_bccField.anchor = GridBagConstraints.NORTH;
+		gbc_bccField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_bccField.gridx = 1;
+		gbc_bccField.gridy = 2;
+		add(bccField, gbc_bccField);
+		bccField.setColumns(10);
+		bccField.setText(emailPart.getBcc());
+		TextComponentListener bccTal = new TextComponentListener(emailPart,
+				FieldType.BCC);
+		bccField.addActionListener(bccTal);
+		bccField.addFocusListener(bccTal);
 
 		JLabel lblTitle = new JLabel("Title");
 		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
 		gbc_lblTitle.anchor = GridBagConstraints.EAST;
 		gbc_lblTitle.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTitle.gridx = 0;
-		gbc_lblTitle.gridy = 2;
+		gbc_lblTitle.gridy = 3;
 		add(lblTitle, gbc_lblTitle);
 
 		textField = new JTextField();
@@ -102,11 +128,12 @@ public class EmailPanel extends JPanel {
 		gbc_textField.anchor = GridBagConstraints.NORTH;
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 2;
+		gbc_textField.gridy = 3;
 		add(textField, gbc_textField);
 		textField.setColumns(10);
 		textField.setText(emailPart.getTitle());
-		TextComponentListener titleTal = new TextComponentListener(emailPart, FieldType.TITLE);
+		TextComponentListener titleTal = new TextComponentListener(emailPart,
+				FieldType.TITLE);
 		textField.addActionListener(titleTal);
 		textField.addFocusListener(titleTal);
 
@@ -116,7 +143,7 @@ public class EmailPanel extends JPanel {
 		gbc_lblBody.fill = GridBagConstraints.BOTH;
 		gbc_lblBody.insets = new Insets(0, 0, 5, 5);
 		gbc_lblBody.gridx = 0;
-		gbc_lblBody.gridy = 3;
+		gbc_lblBody.gridy = 4;
 		add(lblBody, gbc_lblBody);
 
 		JTextPane textPane = new JTextPane();
@@ -124,15 +151,16 @@ public class EmailPanel extends JPanel {
 		gbc_textPane.anchor = GridBagConstraints.NORTH;
 		gbc_textPane.fill = GridBagConstraints.BOTH;
 		gbc_textPane.gridx = 1;
-		gbc_textPane.gridy = 3;
+		gbc_textPane.gridy = 4;
 		add(textPane, gbc_textPane);
 		textPane.setText(emailPart.getBody());
-		TextComponentListener bodyTal = new TextComponentListener(emailPart, FieldType.BODY);
+		TextComponentListener bodyTal = new TextComponentListener(emailPart,
+				FieldType.BODY);
 		textPane.addFocusListener(bodyTal);
 	}
 
 	enum FieldType {
-		TO, CC, TITLE, BODY;
+		TO, CC, BCC, TITLE, BODY;
 	}
 
 	class TextComponentListener implements ActionListener, FocusListener {
@@ -169,7 +197,7 @@ public class EmailPanel extends JPanel {
 				if (!StringUtils.isBlank(txt)) {
 					newValue = txt;
 				}
-				if (oldValue==null || oldValue.equals(newValue) == false) {
+				if (oldValue == null || oldValue.equals(newValue) == false) {
 					setNewValue(newValue);
 				}
 			}
@@ -183,6 +211,9 @@ public class EmailPanel extends JPanel {
 				break;
 			case CC:
 				oldValue = emailPart.getCc();
+				break;
+			case BCC:
+				oldValue = emailPart.getBcc();
 				break;
 			case TITLE:
 				oldValue = emailPart.getTitle();
@@ -201,6 +232,9 @@ public class EmailPanel extends JPanel {
 				break;
 			case CC:
 				emailPart.setCc(newValue);
+				break;
+			case BCC:
+				emailPart.setBcc(newValue);
 				break;
 			case TITLE:
 				emailPart.setTitle(newValue);

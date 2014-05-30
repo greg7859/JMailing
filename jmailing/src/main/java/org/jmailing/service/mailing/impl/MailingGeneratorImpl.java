@@ -211,6 +211,14 @@ public class MailingGeneratorImpl implements MailingGenerator {
 		for (String cc : splited) {
 			email.addCc(cc);
 		}
+		
+		// BCC
+		String bccs = replaceVariables(eMailMailingProjectPart.getBcc(), data,
+				variables);
+		splited = Splitter.on(';').trimResults().omitEmptyStrings().split(bccs);
+		for (String bcc : splited) {
+			email.addBcc(bcc);
+		}
 
 		String title = replaceVariables(eMailMailingProjectPart.getTitle(),
 				data, variables);

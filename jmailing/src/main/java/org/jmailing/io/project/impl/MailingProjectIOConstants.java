@@ -12,6 +12,7 @@ static public final String ATTACHMENT_NUMBER="attachment.number";
 static public final String EMAIL_FILENAME ="mail";
 static public final String EMAIL_TO ="email.to";
 static public final String EMAIL_CC="email.cc";
+static public final String EMAIL_BCC="email.bcc";
 static public final String EMAIL_TITLE="email.title";
 static public final String EMAIL_BODY="mailbody";
 

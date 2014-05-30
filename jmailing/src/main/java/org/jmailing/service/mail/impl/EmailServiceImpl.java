@@ -55,11 +55,15 @@ public class EmailServiceImpl implements EmailService {
 
 			}
 			htmlEmail.setSSLOnConnect(smtp.getSSL());
-			for (String address : email.getTo()) {
-				htmlEmail.addTo(address);
+			for (String to : email.getTo()) {
+				htmlEmail.addTo(to);
 			}
-			for (String address : email.getCc()) {
-				htmlEmail.addCc(address);
+			for (String cc : email.getCc()) {
+				htmlEmail.addCc(cc);
+
+			}
+			for (String bcc : email.getBcc()) {
+				htmlEmail.addBcc(bcc);
 			}
 			htmlEmail.setSubject(email.getSubject());
 

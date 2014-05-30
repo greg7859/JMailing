@@ -125,6 +125,7 @@ public class MailingProjectRetrieverImpl implements MailingProjectRetriever {
 					.getEMailMailingProjectPart();
 			email.setTo(prop.getProperty(MailingProjectIOConstants.EMAIL_TO));
 			email.setCc(prop.getProperty(MailingProjectIOConstants.EMAIL_CC));
+			email.setBcc(prop.getProperty(MailingProjectIOConstants.EMAIL_BCC));
 			email.setTitle(prop
 					.getProperty(MailingProjectIOConstants.EMAIL_TITLE));
 			reader = new BufferedReader(new FileReader(getProjectFolder()

@@ -52,6 +52,7 @@ public class EMailIOImpl implements EMailIO {
 			Properties prop = new Properties();
 			saveArray(prop, EMailIOConstants.EMAIL_TO, email.getTo());
 			saveArray(prop, EMailIOConstants.EMAIL_CC, email.getCc());
+			saveArray(prop, EMailIOConstants.EMAIL_BCC, email.getBcc());
 			String tmp = email.getSubject();
 			prop.setProperty(EMailIOConstants.EMAIL_TITLE,
 					tmp != null ? tmp : "");

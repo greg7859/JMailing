@@ -10,6 +10,10 @@ public interface EmailMailingProjectPart {
 
 	void setCc(String cc);
 
+	String getBcc();
+
+	void setBcc(String bcc);
+
 	String getTitle();
 
 	void setTitle(String title);

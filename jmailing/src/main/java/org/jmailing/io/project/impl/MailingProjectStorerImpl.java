@@ -122,6 +122,9 @@ public class MailingProjectStorerImpl implements MailingProjectStorer {
 			tmp = email.getCc();
 			prop.setProperty(MailingProjectIOConstants.EMAIL_CC,
 					tmp != null ? tmp : "");
+			tmp = email.getBcc();
+			prop.setProperty(MailingProjectIOConstants.EMAIL_BCC,
+					tmp != null ? tmp : "");
 			tmp = email.getTitle();
 			prop.setProperty(MailingProjectIOConstants.EMAIL_TITLE,
 					tmp != null ? tmp : "");
