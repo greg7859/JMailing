@@ -35,7 +35,7 @@ public class CsvFileReader implements DataFileReader {
 		try {
 			String line = br.readLine();
 			while (line != null) {
-				Iterable<String> splited = Splitter.on(',').split(line);
+				Iterable<String> splited = Splitter.on(';').split(line);
 				data = provider.get();
 				dataColl.add(data);
 				for (String string : splited) {
