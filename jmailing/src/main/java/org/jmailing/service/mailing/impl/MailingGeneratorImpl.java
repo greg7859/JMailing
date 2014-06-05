@@ -115,7 +115,7 @@ public class MailingGeneratorImpl implements MailingGenerator {
 					int progress = 20;
 					publish(new MailingGeneratorEvent(EVENT_SPLIT, progress, 0));
 					int size = data.size();
-					int step = 80 / size;
+					float step = 80 / size;
 
 					int index = 0;
 					for (Data itemData : data) {
@@ -124,11 +124,11 @@ public class MailingGeneratorImpl implements MailingGenerator {
 						Attachment attachment = generateAttachment(index,
 								itemData, format, pathProject);
 						email.addAttachment(attachment);
-						logger.log("Email no" + (index + 1) + " is sent");
 						emailIO.save(pathProject, email, index + 1);
+						progress = Math.round(20 + step*(index+1));
 						try {
-							progress += step;
 							emailSvc.sendHtmlMessage(email);
+							logger.log("Email no" + (index + 1) + " is sent");
 							publish(new MailingGeneratorEvent(EVENT_EMAIL_SENT,
 									progress, index));
 
@@ -143,13 +143,13 @@ public class MailingGeneratorImpl implements MailingGenerator {
 							Thread.sleep(sleepTime);
 					}
 				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
+					logger.log(e.getMessage());
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.log(e.getMessage());
 				} catch (AttachmentSplitterException e) {
-					e.printStackTrace();
+					logger.log(e.getMessage());
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					logger.log(e.getMessage());
 				}
 				logger.log("Mailing done");
 				logger.stop();
