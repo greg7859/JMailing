@@ -52,10 +52,22 @@ public class CampaignTableModel extends AbstractTableModel {
 	public Object getValueAt(final int rowIndex, final int colIndex) {
 		String s = "";
 		if (colIndex == 0)
-			return rowIndex+1;
+			return rowIndex + 1;
 		else if (colIndex < variables.size() + 1) {
 			if (data != null) {
-				s = data.get(rowIndex).get(variables.get(colIndex-1).getIndex());
+				if (rowIndex < data.size()) {
+					if (variables.get(colIndex - 1).getIndex() < data.get(
+							rowIndex).size()) {
+						s = data.get(rowIndex).get(
+								variables.get(colIndex - 1).getIndex());
+					} else {
+						return "Pb :" + rowIndex + "  index="
+								+ variables.get(colIndex - 1).getIndex()
+								+ " size=" + data.get(rowIndex).size();
+					}
+				} else {
+					return "Pb " + rowIndex + " data size=" + data.size();
+				}
 			}
 		} else {
 			final JButton button = new JButton("See email");
@@ -76,7 +88,7 @@ public class CampaignTableModel extends AbstractTableModel {
 		if (columnIndex == 0)
 			return "";
 		else if (columnIndex < variables.size() + 1) {
-			return this.variables.get(columnIndex-1).getName();
+			return this.variables.get(columnIndex - 1).getName();
 		} else {
 			return "Action";
 		}
