@@ -14,7 +14,7 @@ import org.jmailing.ui.layout.TableUtilities;
 
 public class CampaignTablePanel extends JPanel {
 	private CampaignTableModel model = null;
-	private JTable table = null;;
+	private JTable table = null;
 	/**
 	 * 
 	 */

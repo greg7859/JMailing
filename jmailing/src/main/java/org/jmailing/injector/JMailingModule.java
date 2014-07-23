@@ -20,6 +20,7 @@ import org.jmailing.injector.annotation.VariableSuffix;
 import org.jmailing.injector.provider.AttachmentProvider;
 import org.jmailing.injector.provider.DataProvider;
 import org.jmailing.injector.provider.EMailProvider;
+import org.jmailing.injector.provider.HistoryProvider;
 import org.jmailing.io.adapter.impl.StringEncryptorImpl;
 import org.jmailing.io.csv.CsvFileReader;
 import org.jmailing.io.csv.DataFileReader;
@@ -35,6 +36,7 @@ import org.jmailing.io.smtp.SmtpIO;
 import org.jmailing.io.smtp.impl.SmtpIOImpl;
 import org.jmailing.model.email.Attachment;
 import org.jmailing.model.email.EMail;
+import org.jmailing.model.history.History;
 import org.jmailing.model.project.AttachmentMailingProjectPart;
 import org.jmailing.model.project.EmailMailingProjectPart;
 import org.jmailing.model.project.MailingConfigurationPart;
@@ -49,6 +51,8 @@ import org.jmailing.model.project.impl.SourceMailingProjectPartImpl;
 import org.jmailing.model.smtp.Smtp;
 import org.jmailing.model.smtp.impl.SmtpImpl;
 import org.jmailing.model.source.Data;
+import org.jmailing.service.history.HistoryService;
+import org.jmailing.service.history.impl.HistoryServiceImpl;
 import org.jmailing.service.logger.FileLogger;
 import org.jmailing.service.logger.impl.FileLoggerImpl;
 import org.jmailing.service.mail.EmailService;
@@ -88,6 +92,7 @@ public class JMailingModule extends AbstractModule {
 		bind(Data.class).toProvider(DataProvider.class);
 		bind(EMail.class).toProvider(EMailProvider.class);
 		bind(Attachment.class).toProvider(AttachmentProvider.class);
+		bind(History.class).toProvider(HistoryProvider.class);
 
 		// IO
 		bind(SmtpIO.class).to(SmtpIOImpl.class);
@@ -96,13 +101,14 @@ public class JMailingModule extends AbstractModule {
 		bind(MailingProjectStorer.class).to(MailingProjectStorerImpl.class);
 		bind(MailingProjectRetriever.class).to(
 				MailingProjectRetrieverImpl.class);
-		
+
 		// Service
 		bind(ProjectNameList.class).to(ProjectNameListImpl.class);
 		bind(AttachmentSplitter.class).to(PdfAttachmentSplitterImpl.class);
 		bind(MailingGenerator.class).to(MailingGeneratorImpl.class);
 		bind(EmailService.class).to(EmailServiceImpl.class);
-		
+		bind(HistoryService.class).to(HistoryServiceImpl.class);
+
 		// Custom logger
 		bind(FileLogger.class).to(FileLoggerImpl.class);
 

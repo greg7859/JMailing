@@ -5,12 +5,15 @@ import java.awt.BorderLayout;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.jmailing.injector.annotation.Campaign;
 import org.jmailing.injector.annotation.Csv;
 import org.jmailing.injector.annotation.Email;
 import org.jmailing.injector.annotation.Mailing;
 import org.jmailing.injector.annotation.Pdf;
+import org.jmailing.ui.project.history.HistoryPanel;
 
 public class MailingProjectPanel extends JPanel {
 
@@ -21,23 +24,26 @@ public class MailingProjectPanel extends JPanel {
 
 	@Inject
 	@Csv
-	JPanel sourcePanel;
-	
+	private JPanel sourcePanel;
+
 	@Inject
 	@Pdf
-	JPanel attachmentPanel;
-	
+	private JPanel attachmentPanel;
+
 	@Inject
 	@Email
-	JPanel emailPanel;
-	
+	private JPanel emailPanel;
+
 	@Inject
 	@Mailing
-	JPanel mailingPanel;
-	
+	private JPanel mailingPanel;
+
 	@Inject
 	@Campaign
-	JPanel campaignPanel;
+	private JPanel campaignPanel;
+
+	@Inject
+	private HistoryPanel historyPanel;
 
 	/**
 	 * Create the panel.
@@ -45,7 +51,7 @@ public class MailingProjectPanel extends JPanel {
 	public MailingProjectPanel() {
 	}
 
-	 @Inject
+	@Inject
 	public final void initPanel() {
 		setLayout(new BorderLayout(0, 0));
 
@@ -56,6 +62,23 @@ public class MailingProjectPanel extends JPanel {
 		tabbedPane.addTab("EMail", emailPanel);
 		tabbedPane.addTab("Mailing", mailingPanel);
 		tabbedPane.addTab("Campaign", campaignPanel);
+		tabbedPane.addTab("History", historyPanel);
+
+		tabbedPane.addChangeListener(new MailingProjectTabChangeListener());
+	}
+
+	class MailingProjectTabChangeListener implements ChangeListener {
+
+		@Override
+		public void stateChanged(ChangeEvent e) {
+			Object source = e.getSource();
+			if (source instanceof JTabbedPane) {
+				JTabbedPane tabbedPane = (JTabbedPane) source;
+				if (tabbedPane.getSelectedIndex() == 5) {
+					historyPanel.refresh();
+				}
+			}
+		}
 
 	}
 
