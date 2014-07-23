@@ -9,14 +9,18 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 
 import org.jmailing.model.email.EMail;
 import org.jmailing.model.history.History;
 import org.jmailing.service.history.HistoryService;
+import org.jmailing.ui.common.JTableButtonMouseListener;
+import org.jmailing.ui.common.JTableButtonRenderer;
 import org.jmailing.ui.layout.TableUtilities;
 
 /**
@@ -35,13 +39,16 @@ public class HistoryEMailPanel extends JPanel implements HistoryLogListener {
 	private HistoryService historyService;
 
 	@Inject
-	public void HistoryEMailPanel(HistoryEMailTableModel model) {
+	public HistoryEMailPanel(HistoryEMailTableModel model) {
 		BorderLayout bl = new BorderLayout();
 		setLayout(bl);
 		emailTable = new JTable(model);
 		TableUtilities.setColumnWidths(emailTable, new Insets(0, 4, 0, 4), true,
 				false);
 		emailTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		TableCellRenderer buttonRenderer = new JTableButtonRenderer();
+		emailTable.setDefaultRenderer(JButton.class, buttonRenderer);
+		emailTable.addMouseListener(new JTableButtonMouseListener(emailTable));
 
 		this.model=model;
 		JScrollPane scrollPane = new JScrollPane();
