@@ -9,8 +9,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.jmailing.injector.annotation.Campaign;
-import org.jmailing.injector.annotation.Csv;
 import org.jmailing.injector.annotation.Email;
+import org.jmailing.injector.annotation.Excel;
 import org.jmailing.injector.annotation.Mailing;
 import org.jmailing.injector.annotation.Pdf;
 import org.jmailing.ui.project.history.HistoryPanel;
@@ -23,7 +23,7 @@ public class MailingProjectPanel extends JPanel {
 	private static final long serialVersionUID = 3296779370121320000L;
 
 	@Inject
-	@Csv
+	@Excel
 	private JPanel sourcePanel;
 
 	@Inject

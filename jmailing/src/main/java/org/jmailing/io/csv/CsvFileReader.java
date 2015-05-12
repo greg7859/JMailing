@@ -22,12 +22,12 @@ public class CsvFileReader implements DataFileReader {
 	}
 
 	@Override
-	public List<Data> readAll(String filename) throws IOException {
-		return read(filename, -1);
+	public List<Data> readAll(String filename, boolean ignoreFirstLine) throws IOException {
+		return read(filename, -1, ignoreFirstLine);
 	}
 
 	@Override
-	public List<Data> read(String filename, int nbItemToRead)
+	public List<Data> read(String filename, int nbItemToRead, boolean ignoreFirstLine)
 			throws IOException {
 		List<Data> dataColl = new ArrayList<>();
 		Data data = null;

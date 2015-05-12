@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import org.apache.commons.lang.StringUtils;
-import org.jmailing.injector.annotation.Csv;
+import org.jmailing.injector.annotation.Excel;
 import org.jmailing.injector.annotation.Pdf;
 import org.jmailing.io.csv.DataFileReader;
 import org.jmailing.model.source.Data;
@@ -31,8 +31,8 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 	private DataFileReader reader;
 
 	@Inject
-	@Csv
-	private FilePanel csvFilePanel;
+	@Excel
+	private FilePanel srcFilePanel;
 
 	@Inject
 	@Pdf
@@ -81,8 +81,8 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 		gbc_CsvPanel.insets = new Insets(0, 0, 5, 5);
 		gbc_CsvPanel.gridx = 0;
 		gbc_CsvPanel.gridy = 0;
-		add(csvFilePanel, gbc_CsvPanel);
-		csvFilePanel.addListener(this);
+		add(srcFilePanel, gbc_CsvPanel);
+		srcFilePanel.addListener(this);
 
 		GridBagConstraints gbc_PdfPanel = new GridBagConstraints();
 		gbc_PdfPanel.anchor = GridBagConstraints.CENTER;
@@ -133,10 +133,10 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 
 	@Override
 	public void fileSelected(String selectedFile) {
-		if (selectedFile.toLowerCase().endsWith("csv")) {
+		if (selectedFile.toLowerCase().endsWith("xlsx")) {
 			cvsFile = selectedFile;
 			try {
-				csvData = reader.readAll(selectedFile);
+				csvData = reader.readAll(selectedFile, false);
 				cTablePanel.setData(csvData);
 				cTablePanel.setVisible(true);
 				checkConsistencyData();
@@ -172,7 +172,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 
 	private void changeStateButton(boolean b) {
 		sendBtn.setEnabled(b);
-		csvFilePanel.setEnabled(b);
+		srcFilePanel.setEnabled(b);
 		pdfFilePanel.setEnabled(b);
 	}
 

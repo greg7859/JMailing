@@ -7,7 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 
-import org.jmailing.injector.annotation.Csv;
+import org.jmailing.injector.annotation.Excel;
 import org.jmailing.io.csv.DataFileReader;
 import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.project.SourceVariable;
@@ -31,7 +31,7 @@ public class SourcePanel extends JPanel implements FilePanelListener,
 	@Inject
 	SourceVariablePanel sourceVariablePanel;
 	
-	@Inject @Csv
+	@Inject @Excel
 	FilePanel sourceFilePanel;
 
 	/**
@@ -62,7 +62,7 @@ public class SourcePanel extends JPanel implements FilePanelListener,
 	@Override
 	public void fileSelected(String selectedFile) {
 		try {
-			List<Data> data = reader.read(selectedFile, 20);
+			List<Data> data = reader.read(selectedFile, 20, false);
 			sourceTablePanel.setData(data);
 		} catch (IOException e) {
 			e.printStackTrace();

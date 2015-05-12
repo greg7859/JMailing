@@ -8,6 +8,7 @@ import org.jmailing.config.Constants;
 import org.jmailing.injector.annotation.Campaign;
 import org.jmailing.injector.annotation.Csv;
 import org.jmailing.injector.annotation.Email;
+import org.jmailing.injector.annotation.Excel;
 import org.jmailing.injector.annotation.Extension;
 import org.jmailing.injector.annotation.Html;
 import org.jmailing.injector.annotation.Log;
@@ -22,8 +23,8 @@ import org.jmailing.injector.provider.DataProvider;
 import org.jmailing.injector.provider.EMailProvider;
 import org.jmailing.injector.provider.HistoryProvider;
 import org.jmailing.io.adapter.impl.StringEncryptorImpl;
-import org.jmailing.io.csv.CsvFileReader;
 import org.jmailing.io.csv.DataFileReader;
+import org.jmailing.io.csv.ExcelFileReader;
 import org.jmailing.io.email.EMailIO;
 import org.jmailing.io.email.impl.EMailIOImpl;
 import org.jmailing.io.project.MailingProjectRetriever;
@@ -62,6 +63,7 @@ import org.jmailing.service.mailing.MailingGenerator;
 import org.jmailing.service.mailing.impl.MailingGeneratorImpl;
 import org.jmailing.service.mailing.impl.PdfAttachmentSplitterImpl;
 import org.jmailing.ui.common.panel.CsvFilePanel;
+import org.jmailing.ui.common.panel.ExcelFilePanel;
 import org.jmailing.ui.common.panel.FilePanel;
 import org.jmailing.ui.common.panel.PdfFilePanel;
 import org.jmailing.ui.project.attachment.AttachmentPanel;
@@ -97,7 +99,8 @@ public class JMailingModule extends AbstractModule {
 		// IO
 		bind(SmtpIO.class).to(SmtpIOImpl.class);
 		bind(EMailIO.class).to(EMailIOImpl.class);
-		bind(DataFileReader.class).to(CsvFileReader.class);
+		// bind(DataFileReader.class).to(CsvFileReader.class);
+		bind(DataFileReader.class).to(ExcelFileReader.class);
 		bind(MailingProjectStorer.class).to(MailingProjectStorerImpl.class);
 		bind(MailingProjectRetriever.class).to(
 				MailingProjectRetrieverImpl.class);
@@ -116,9 +119,11 @@ public class JMailingModule extends AbstractModule {
 		bind(StringEncryptor.class).to(StringEncryptorImpl.class);
 
 		// UI
-		bind(FilePanel.class).annotatedWith(Csv.class).to(CsvFilePanel.class);
+//		bind(FilePanel.class).annotatedWith(Csv.class).to(CsvFilePanel.class);
+		bind(FilePanel.class).annotatedWith(Excel.class).to(
+				ExcelFilePanel.class);
 		bind(FilePanel.class).annotatedWith(Pdf.class).to(PdfFilePanel.class);
-		bind(JPanel.class).annotatedWith(Csv.class).to(SourcePanel.class);
+		bind(JPanel.class).annotatedWith(Excel.class).to(SourcePanel.class);
 		bind(JPanel.class).annotatedWith(Pdf.class).to(AttachmentPanel.class);
 		bind(JPanel.class).annotatedWith(Email.class).to(EmailPanel.class);
 		bind(JPanel.class).annotatedWith(Mailing.class).to(
