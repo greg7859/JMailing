@@ -21,6 +21,7 @@ import org.jmailing.injector.provider.EMailProvider;
 import org.jmailing.io.email.EMailIO;
 import org.jmailing.model.email.Attachment;
 import org.jmailing.model.email.EMail;
+import org.jmailing.model.email.InvalidAddressException;
 import org.jmailing.utilities.FileNameUtilities;
 
 import com.google.common.base.Charsets;
@@ -117,15 +118,27 @@ public class EMailIOImpl implements EMailIO {
 
 		List<String> tos = loadArray(prop, EMailIOConstants.EMAIL_TO);
 		for (String string : tos) {
-			email.addTo(string);
+			try {
+				email.addTo(string);
+			} catch (InvalidAddressException e) {
+				e.printStackTrace();
+			}
 		}
 		List<String> ccs = loadArray(prop, EMailIOConstants.EMAIL_CC);
 		for (String string : ccs) {
-			email.addCc(string);
+			try {
+				email.addCc(string);
+			} catch (InvalidAddressException e) {
+				e.printStackTrace();
+			}
 		}
 		List<String> bccs = loadArray(prop, EMailIOConstants.EMAIL_BCC);
 		for (String string : bccs) {
-			email.addBcc(string);
+			try {
+				email.addBcc(string);
+			} catch (InvalidAddressException e) {
+				e.printStackTrace();
+			}
 		}
 
 		email.setSubject(prop.getProperty(EMailIOConstants.EMAIL_TITLE));

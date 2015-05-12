@@ -20,6 +20,7 @@ import org.jmailing.injector.provider.EMailProvider;
 import org.jmailing.io.email.EMailIO;
 import org.jmailing.model.email.Attachment;
 import org.jmailing.model.email.EMail;
+import org.jmailing.model.email.InvalidAddressException;
 import org.jmailing.model.project.EmailMailingProjectPart;
 import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.project.SourceVariable;
@@ -142,8 +143,8 @@ public class MailingGeneratorImpl implements MailingGenerator {
 						if (index != size)
 							Thread.sleep(sleepTime);
 					}
-				} catch (IllegalArgumentException e) {
-					logger.log(e.getMessage());
+//				} catch (IllegalArgumentException e) {
+//					logger.log(e.getMessage());
 				} catch (IOException e) {
 					logger.log(e.getMessage());
 				} catch (AttachmentSplitterException e) {
@@ -201,7 +202,11 @@ public class MailingGeneratorImpl implements MailingGenerator {
 		Iterable<String> splited = Splitter.on(';').trimResults()
 				.omitEmptyStrings().split(tos);
 		for (String to : splited) {
-			email.addTo(to);
+			try {
+				email.addTo(to);
+			} catch (InvalidAddressException e) {
+				logger.log("Invalid TO address, ignore it :"+to);
+			}
 		}
 
 		// CC
@@ -209,7 +214,11 @@ public class MailingGeneratorImpl implements MailingGenerator {
 				variables);
 		splited = Splitter.on(';').trimResults().omitEmptyStrings().split(ccs);
 		for (String cc : splited) {
-			email.addCc(cc);
+			try {
+				email.addCc(cc);
+			} catch (InvalidAddressException e) {
+				logger.log("Invalid CC address, ignore it :"+cc);
+			}
 		}
 		
 		// BCC
@@ -217,7 +226,11 @@ public class MailingGeneratorImpl implements MailingGenerator {
 				variables);
 		splited = Splitter.on(';').trimResults().omitEmptyStrings().split(bccs);
 		for (String bcc : splited) {
-			email.addBcc(bcc);
+			try {
+				email.addBcc(bcc);
+			} catch (InvalidAddressException e) {
+				logger.log("Invalid BCC address, ignore it :"+bcc);
+			}
 		}
 
 		String title = replaceVariables(eMailMailingProjectPart.getTitle(),

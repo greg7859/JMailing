@@ -3,8 +3,10 @@ package org.jmailing.model.email.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.validator.routines.EmailValidator;
 import org.jmailing.model.email.Attachment;
 import org.jmailing.model.email.EMail;
+import org.jmailing.model.email.InvalidAddressException;
 
 import com.google.common.collect.Iterables;
 
@@ -30,8 +32,8 @@ public class EMailImpl implements EMail {
 	}
 
 	@Override
-	public void addTo(String to) {
-		tos.add(to);
+	public void addTo(String to) throws InvalidAddressException {
+		addAddress(to, tos);
 	}
 
 	@Override
@@ -40,18 +42,18 @@ public class EMailImpl implements EMail {
 	}
 
 	@Override
-	public void addBcc(String bcc) {
-		bccs.add(bcc);
+	public void addBcc(String bcc) throws InvalidAddressException {
+		addAddress(bcc, bccs);
 	}
-	
+
 	@Override
 	public String[] getBcc() {
 		return Iterables.toArray(bccs, String.class);
 	}
 
 	@Override
-	public void addCc(String cc) {
-		ccs.add(cc);
+	public void addCc(String cc) throws InvalidAddressException {
+		addAddress(cc, ccs);
 	}
 
 	@Override
@@ -82,5 +84,13 @@ public class EMailImpl implements EMail {
 	@Override
 	public Attachment[] getAttachments() {
 		return Iterables.toArray(attachments, Attachment.class);
+	}
+
+	private void addAddress(String address, List<String> list)
+			throws InvalidAddressException {
+		if (EmailValidator.getInstance().isValid(address))
+			list.add(address);
+		else
+			throw new InvalidAddressException();
 	}
 }

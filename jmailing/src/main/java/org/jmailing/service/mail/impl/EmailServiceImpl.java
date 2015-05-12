@@ -9,6 +9,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.jmailing.injector.provider.EMailProvider;
 import org.jmailing.model.email.Attachment;
 import org.jmailing.model.email.EMail;
+import org.jmailing.model.email.InvalidAddressException;
 import org.jmailing.model.smtp.Smtp;
 import org.jmailing.service.mail.EmailService;
 import org.jmailing.service.mail.EmailServiceException;
@@ -31,7 +32,12 @@ public class EmailServiceImpl implements EmailService {
 		// Create the email
 		EMail email = emailProvider.get();
 		for (String address : to) {
-			email.addTo(address);
+			try {
+				email.addTo(address);
+			} catch (InvalidAddressException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		email.setSubject(subject);
 		email.setBody(body);

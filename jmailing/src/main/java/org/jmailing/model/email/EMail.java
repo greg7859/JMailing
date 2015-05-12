@@ -4,15 +4,15 @@ public interface EMail {
 
 	String[] getTo();
 
-	void addTo(String to);
+	void addTo(String to) throws InvalidAddressException;
 
 	String[] getCc();
 
-	void addCc(String c);
+	void addCc(String c) throws InvalidAddressException;
 
 	String[] getBcc();
 
-	void addBcc(String c);
+	void addBcc(String c) throws InvalidAddressException;
 
 	String getSubject();
 
