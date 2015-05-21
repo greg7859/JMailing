@@ -92,7 +92,7 @@ public class EmailServiceImpl implements EmailService {
 			}
 
 			// send the email
-			//htmlEmail.send();
+			htmlEmail.send();
 		} catch (EmailException e) {
 			throw new EmailServiceException(e.getMessage());
 		}
