@@ -5,11 +5,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -44,7 +47,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 	@Inject
 	private MailingGenerator mailingGenerator = null;
 
-	private String cvsFile = null;
+	private String dataSourceFile = null;
 	private String pdfFile = null;
 
 	/**
@@ -52,9 +55,11 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 	 */
 	private static final long serialVersionUID = 744750628941813691L;
 
-	private List<Data> csvData;
+	private List<Data> sourceData;
 
 	private JButton sendBtn;
+
+	private boolean ignoreFirstLine = false;
 
 	private JLabel label;
 
@@ -69,7 +74,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0,0 };
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0,
 				Double.MIN_VALUE };
@@ -93,6 +98,22 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 		add(pdfFilePanel, gbc_PdfPanel);
 		pdfFilePanel.addListener(this);
 
+		GridBagConstraints gbc_CheckBox = new GridBagConstraints();
+		gbc_CheckBox.anchor = GridBagConstraints.CENTER;
+		gbc_CheckBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_CheckBox.insets = new Insets(0, 0, 5, 5);
+		gbc_CheckBox.gridx = 0;
+		gbc_CheckBox.gridy = 2;
+		final JCheckBox checkBox = new JCheckBox(
+				"Ignore first line in data source file", ignoreFirstLine);
+		add(checkBox, gbc_CheckBox);
+		checkBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				ignoreFirstLine = checkBox.isSelected();
+				loadData();
+			}
+		});
+
 		GridBagConstraints gbc_ButtonPanel = new GridBagConstraints();
 		gbc_ButtonPanel.anchor = GridBagConstraints.EAST;
 		// gbc_ButtonPanel.fill = GridBagConstraints.HORIZONTAL;
@@ -106,7 +127,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				changeStateButton(false);
-				mailingGenerator.sendCampaign(csvData, pdfFile);
+				mailingGenerator.sendCampaign(sourceData, pdfFile);
 			}
 		});
 		add(sendBtn, gbc_ButtonPanel);
@@ -134,20 +155,13 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 	@Override
 	public void fileSelected(String selectedFile) {
 		if (selectedFile.toLowerCase().endsWith("xlsx")) {
-			cvsFile = selectedFile;
-			try {
-				csvData = reader.readAll(selectedFile, false);
-				cTablePanel.setData(csvData);
-				cTablePanel.setVisible(true);
-				checkConsistencyData();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			dataSourceFile = selectedFile;
+			loadData();
 		} else {
 			pdfFile = selectedFile;
 		}
 
-		if (StringUtils.isNotBlank(cvsFile) && StringUtils.isNotBlank(pdfFile)) {
+		if (StringUtils.isNotBlank(dataSourceFile) && StringUtils.isNotBlank(pdfFile)) {
 			sendBtn.setEnabled(true);
 		}
 		updateLabel();
@@ -157,17 +171,30 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 	@Override
 	public void done() {
 		changeStateButton(true);
-		label.setText( "Campaign done !");
+		label.setText("Campaign done !");
 		JOptionPane.showMessageDialog(this, "Campaign done !");
 	}
 
 	@Override
 	public void progress(int index, int progress, boolean state) {
-		label.setText("Send " + (index + 1) + " on " + csvData.size());
+		label.setText("Send " + (index + 1) + " on " + sourceData.size());
 		progressBar.setValue(progress);
-		progressBar.setString(progress+" %");
-//		System.out.println("Progress=" + progress + " %. Send " + (index + 1)
-//				+ " on " + csvData.size());
+		progressBar.setString(progress + " %");
+		// System.out.println("Progress=" + progress + " %. Send " + (index + 1)
+		// + " on " + csvData.size());
+	}
+
+	private void loadData() {
+		if (dataSourceFile != null) {
+			try {
+				sourceData = reader.readAll(dataSourceFile, ignoreFirstLine);
+				cTablePanel.setData(sourceData);
+				cTablePanel.setVisible(true);
+				checkConsistencyData();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void changeStateButton(boolean b) {
@@ -178,7 +205,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 
 	private void checkConsistencyData() {
 		int size = -1;
-		for (Data data : csvData) {
+		for (Data data : sourceData) {
 			if (size == -1)
 				size = data.size();
 			else if (size != data.size()) {
@@ -188,18 +215,16 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 			}
 		}
 	}
-	
+
 	private void updateLabel() {
-		if (StringUtils.isNotBlank(cvsFile) && StringUtils.isNotBlank(pdfFile)) {
+		if (StringUtils.isNotBlank(dataSourceFile) && StringUtils.isNotBlank(pdfFile)) {
 			sendBtn.setEnabled(true);
 			label.setText("Click on button \"Send\" to start the mailing.");
+		} else if (StringUtils.isBlank(dataSourceFile)) {
+			label.setText("Select a CSV File.");
+		} else if (StringUtils.isBlank(pdfFile)) {
+			label.setText("Select a PDF File.");
 		}
-		else if (StringUtils.isBlank(cvsFile)) {
-			label.setText("Select a CSV File.");			
-		}
-		else if (StringUtils.isBlank(pdfFile)) {
-			label.setText("Select a PDF File.");			
-		}		
 	}
 
 	private JPanel initProgressPanel() {
