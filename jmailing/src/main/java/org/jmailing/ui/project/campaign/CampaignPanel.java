@@ -74,9 +74,9 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0,
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
 				Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 
@@ -119,7 +119,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 		// gbc_ButtonPanel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_ButtonPanel.insets = new Insets(0, 0, 5, 5);
 		gbc_ButtonPanel.gridx = 0;
-		gbc_ButtonPanel.gridy = 2;
+		gbc_ButtonPanel.gridy = 3;
 		sendBtn = new JButton("Send");
 		sendBtn.setEnabled(false);
 		sendBtn.addActionListener(new ActionListener() {
@@ -137,7 +137,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 		gbc_ProgressPanel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_ProgressPanel.insets = new Insets(0, 0, 5, 5);
 		gbc_ProgressPanel.gridx = 0;
-		gbc_ProgressPanel.gridy = 3;
+		gbc_ProgressPanel.gridy = 4;
 		JPanel progressPanel = initProgressPanel();
 		add(progressPanel, gbc_ProgressPanel);
 
@@ -146,7 +146,7 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 		gbc_Table.fill = GridBagConstraints.BOTH;
 		gbc_Table.insets = new Insets(0, 0, 5, 5);
 		gbc_Table.gridx = 0;
-		gbc_Table.gridy = 4;
+		gbc_Table.gridy = 5;
 		add(cTablePanel, gbc_Table);
 		cTablePanel.setVisible(false);
 		updateLabel();
@@ -161,7 +161,8 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 			pdfFile = selectedFile;
 		}
 
-		if (StringUtils.isNotBlank(dataSourceFile) && StringUtils.isNotBlank(pdfFile)) {
+		if (StringUtils.isNotBlank(dataSourceFile)
+				&& StringUtils.isNotBlank(pdfFile)) {
 			sendBtn.setEnabled(true);
 		}
 		updateLabel();
@@ -217,7 +218,8 @@ public class CampaignPanel extends JPanel implements FilePanelListener,
 	}
 
 	private void updateLabel() {
-		if (StringUtils.isNotBlank(dataSourceFile) && StringUtils.isNotBlank(pdfFile)) {
+		if (StringUtils.isNotBlank(dataSourceFile)
+				&& StringUtils.isNotBlank(pdfFile)) {
 			sendBtn.setEnabled(true);
 			label.setText("Click on button \"Send\" to start the mailing.");
 		} else if (StringUtils.isBlank(dataSourceFile)) {
