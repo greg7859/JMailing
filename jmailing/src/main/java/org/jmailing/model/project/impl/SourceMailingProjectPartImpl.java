@@ -19,6 +19,7 @@ public class SourceMailingProjectPartImpl implements SourceMailingProjectPart {
 		registerSourceVariable("EMAIL2", Type.OPTIONAL) ;
 		registerSourceVariable("EMAIL3", Type.OPTIONAL) ;
 		registerSourceVariable("EMAIL4", Type.OPTIONAL) ;
+		registerSourceVariable("CATEGORY", Type.OPTIONAL) ;
 	}
 
 	@Override
