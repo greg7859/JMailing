@@ -62,7 +62,7 @@ public class SourcePanel extends JPanel implements FilePanelListener,
 	@Override
 	public void fileSelected(String selectedFile) {
 		try {
-			List<Data> data = reader.read(selectedFile, 20, false);
+			List<Data> data = reader.readAll(selectedFile, false);
 			sourceTablePanel.setData(data);
 		} catch (IOException e) {
 			e.printStackTrace();
