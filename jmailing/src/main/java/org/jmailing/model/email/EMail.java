@@ -1,5 +1,7 @@
 package org.jmailing.model.email;
 
+import java.util.List;
+
 public interface EMail {
 
 	String[] getTo();
@@ -23,6 +25,8 @@ public interface EMail {
 	void setBody(String body);
 
 	void addAttachment(Attachment attachment);
+
+	void addAttachments(List<Attachment> attachments);
 
 	Attachment[] getAttachments();
 

@@ -12,12 +12,14 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
 import org.jmailing.config.ConfigHelper;
 import org.jmailing.injector.annotation.Extension;
 import org.jmailing.injector.annotation.ProjectPath;
 import org.jmailing.io.project.MailingProjectStorer;
 import org.jmailing.model.project.AttachmentMailingProjectPart;
 import org.jmailing.model.project.EmailMailingProjectPart;
+import org.jmailing.model.project.ExtraAttachment;
 import org.jmailing.model.project.MailingConfigurationPart;
 import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.project.SourceVariable;
@@ -101,6 +103,16 @@ public class MailingProjectStorerImpl implements MailingProjectStorer {
 				attachment.getFilenameFormat());
 		prop.setProperty(MailingProjectIOConstants.ATTACHMENT_NUMBER,
 				Integer.toString(attachment.getNumberOfPageOfSplit()));
+		int extraAttachmentSize = attachment.getExtraAttachmentSize();
+		for (int i = 0; i < extraAttachmentSize; i++) {
+			ExtraAttachment f = attachment.getExtraAttachment(i);
+			if (StringUtils.isNotBlank(f.getFilename()) && StringUtils.isNotBlank(f.getFileToAttach())) {
+				prop.setProperty(MailingProjectIOConstants.ATTACHMENT_EXTRA_FILE + i,
+						f.getFilename());
+				prop.setProperty(MailingProjectIOConstants.ATTACHMENT_EXTRA_FILE_TO_ATTACH + i,
+						f.getFileToAttach());
+			}
+		}
 
 		prop.store(fos, " Attachment Mailing Project");
 		fos.close();

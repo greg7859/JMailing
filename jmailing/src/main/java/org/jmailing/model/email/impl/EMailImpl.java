@@ -80,6 +80,10 @@ public class EMailImpl implements EMail {
 	public void addAttachment(Attachment attachment) {
 		attachments.add(attachment);
 	}
+	@Override
+	public void addAttachments(List<Attachment> attachments) {
+		this.attachments.addAll(attachments);
+	}
 
 	@Override
 	public Attachment[] getAttachments() {

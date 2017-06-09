@@ -21,7 +21,9 @@ import org.jmailing.io.email.EMailIO;
 import org.jmailing.model.email.Attachment;
 import org.jmailing.model.email.EMail;
 import org.jmailing.model.email.InvalidAddressException;
+import org.jmailing.model.project.AttachmentMailingProjectPart;
 import org.jmailing.model.project.EmailMailingProjectPart;
+import org.jmailing.model.project.ExtraAttachment;
 import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.project.SourceVariable;
 import org.jmailing.model.source.Data;
@@ -36,6 +38,7 @@ import org.jmailing.service.mailing.MailingGeneratorListener;
 import org.jmailing.utilities.FileNameUtilities;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 
 public class MailingGeneratorImpl implements MailingGenerator {
 	final static String SPLITTED_FILENAME = "PDF-";
@@ -91,8 +94,8 @@ public class MailingGeneratorImpl implements MailingGenerator {
 
 			@Override
 			protected Integer doInBackground() throws Exception {
-				int nbPage = project.getAttachmentMailingProjectPart()
-						.getNumberOfPageOfSplit();
+				AttachmentMailingProjectPart attachmentMailingProjectPart = project.getAttachmentMailingProjectPart();
+				int nbPage = attachmentMailingProjectPart.getNumberOfPageOfSplit();
 				try {
 					String dateStr = dateFormat.format(Calendar.getInstance()
 							.getTime());
@@ -117,6 +120,11 @@ public class MailingGeneratorImpl implements MailingGenerator {
 					publish(new MailingGeneratorEvent(EVENT_SPLIT, progress, 0));
 					int size = data.size();
 					float step = 80 / size;
+					
+					List<Attachment> attachments = Lists.newArrayList();
+					for(int i=0; i<attachmentMailingProjectPart.getExtraAttachmentSize(); i++ ) {
+						attachments.add(generateExtraAttachment(attachmentMailingProjectPart.getExtraAttachment(i)));
+					}
 
 					int index = 0;
 					for (Data itemData : data) {
@@ -125,6 +133,7 @@ public class MailingGeneratorImpl implements MailingGenerator {
 						Attachment attachment = generateAttachment(index,
 								itemData, format, pathProject);
 						email.addAttachment(attachment);
+						email.addAttachments(attachments);
 						emailIO.save(pathProject, email, index + 1);
 						progress = Math.round(20 + step*(index+1));
 						try {
@@ -256,6 +265,13 @@ public class MailingGeneratorImpl implements MailingGenerator {
 				index + 1, pdfExtension);
 		attachment.setPath(file);
 
+		return attachment;
+	}
+	
+	private Attachment generateExtraAttachment(ExtraAttachment extraAttachment) {
+		Attachment attachment = attachmentProvider.get();
+		attachment.setName(extraAttachment.getFilename());
+		attachment.setPath(extraAttachment.getFileToAttach());
 		return attachment;
 	}
 

@@ -14,9 +14,11 @@ import javax.inject.Inject;
 
 import org.jmailing.injector.annotation.Extension;
 import org.jmailing.injector.annotation.ProjectPath;
+import org.jmailing.injector.provider.ExtraAttachmentProvider;
 import org.jmailing.io.project.MailingProjectRetriever;
 import org.jmailing.model.project.AttachmentMailingProjectPart;
 import org.jmailing.model.project.EmailMailingProjectPart;
+import org.jmailing.model.project.ExtraAttachment;
 import org.jmailing.model.project.MailingConfigurationPart;
 import org.jmailing.model.project.MailingProject;
 import org.jmailing.model.project.SourceMailingProjectPart;
@@ -30,14 +32,17 @@ public class MailingProjectRetrieverImpl implements MailingProjectRetriever {
 
 	@Inject
 	@Extension
-	String extension;
+	private String extension;
 
 	@Inject
-	MailingProject project;
+	private MailingProject project;
 
 	@Inject
 	@ProjectPath
-	String path;
+	private String path;
+
+	@Inject
+	private ExtraAttachmentProvider extraAttachmentProvider;
 
 	private String nameProject;
 
@@ -64,7 +69,7 @@ public class MailingProjectRetrieverImpl implements MailingProjectRetriever {
 		Properties prop = new Properties();
 		prop.load(fis);
 		fis.close();
-		
+
 		project.setName(this.nameProject);
 	}
 
@@ -108,6 +113,24 @@ public class MailingProjectRetrieverImpl implements MailingProjectRetriever {
 		int index = Integer.parseInt(prop
 				.getProperty(MailingProjectIOConstants.ATTACHMENT_NUMBER));
 		attachment.setNumberOfPageOfSplit(index);
+
+		String filename;
+		String fileToAttach;
+		attachment.removeAllExtraAttachment();
+		for (int counter = 0; prop
+				.getProperty(MailingProjectIOConstants.ATTACHMENT_EXTRA_FILE
+						+ counter) != null; counter++) {
+			filename = prop
+					.getProperty(MailingProjectIOConstants.ATTACHMENT_EXTRA_FILE
+							+ counter);
+			fileToAttach = prop
+					.getProperty(MailingProjectIOConstants.ATTACHMENT_EXTRA_FILE_TO_ATTACH
+							+ counter);
+			ExtraAttachment extraAttachment = extraAttachmentProvider.get();
+			extraAttachment.setFilename(filename);
+			extraAttachment.setFileToAttach(fileToAttach);
+			attachment.addExtraAttachment(extraAttachment);
+		}
 	}
 
 	private void loadMail() throws IOException {
@@ -115,8 +138,8 @@ public class MailingProjectRetrieverImpl implements MailingProjectRetriever {
 		try {
 			// Open the file
 			FileInputStream fis = new FileInputStream(getProjectFolder()
-					+ File.separator
-					+ MailingProjectIOConstants.EMAIL_FILENAME + extension);
+					+ File.separator + MailingProjectIOConstants.EMAIL_FILENAME
+					+ extension);
 			Properties prop = new Properties();
 			prop.load(fis);
 			fis.close();
@@ -149,14 +172,16 @@ public class MailingProjectRetrieverImpl implements MailingProjectRetriever {
 	private void loadMailing() throws IOException {
 		// Create the file
 		FileInputStream fis = new FileInputStream(getProjectFolder()
-				+ File.separator + MailingProjectIOConstants.MAILING_FILENAME + extension);
+				+ File.separator + MailingProjectIOConstants.MAILING_FILENAME
+				+ extension);
 		Properties prop = new Properties();
 		prop.load(fis);
 		fis.close();
 		MailingConfigurationPart mailing = project
 				.getMailingConfigurationPart();
-		int index = Integer.parseInt(prop.getProperty(MailingProjectIOConstants.MAILING_NUMBER));
-		mailing.setNumberMailPerHour( index); 
+		int index = Integer.parseInt(prop
+				.getProperty(MailingProjectIOConstants.MAILING_NUMBER));
+		mailing.setNumberMailPerHour(index);
 	}
 
 	private String getProjectFolder() {
